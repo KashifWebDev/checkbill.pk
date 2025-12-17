@@ -60,6 +60,52 @@
 </head>
 <body class="premium-mesh text-slate-600 antialiased selection:bg-green-500/20 selection:text-green-700 relative min-h-screen flex flex-col">
 
+    @php
+        $logo = function (string $initials, string $colorStart, string $colorEnd): string {
+            $svg = <<<'SVG'
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img">
+                    <defs>
+                        <linearGradient id="g" x1="0%" x2="100%" y1="0%" y2="100%">
+                            <stop offset="0%" stop-color="COLOR_START" />
+                            <stop offset="100%" stop-color="COLOR_END" />
+                        </linearGradient>
+                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+                            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a20" />
+                        </filter>
+                    </defs>
+                    <rect x="8" y="8" width="80" height="80" rx="20" fill="url(#g)" filter="url(#shadow)" />
+                    <rect x="18" y="18" width="60" height="60" rx="16" fill="#ffffff40" stroke="#ffffff80" stroke-width="2" />
+                    <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="700" fill="#0f172a">
+                        INITIALS
+                    </text>
+                </svg>
+            SVG;
+
+            $svg = str_replace(['COLOR_START', 'COLOR_END', 'INITIALS'], [$colorStart, $colorEnd, $initials], $svg);
+
+            return 'data:image/svg+xml,' . rawurlencode($svg);
+        };
+
+        $providers = [
+            ['key' => 'iesco', 'label' => 'IESCO', 'name' => 'Islamabad Electric Supply Company', 'type' => 'electricity', 'initials' => 'IE', 'color' => 'bg-green-100 text-green-600', 'logo' => $logo('IE', '#22c55e', '#86efac'), 'route' => route('providers.iesco'), 'tagline' => 'Islamabad region'],
+            ['key' => 'lesco', 'label' => 'LESCO', 'name' => 'Lahore Electric Supply Company', 'type' => 'electricity', 'initials' => 'LE', 'color' => 'bg-orange-100 text-orange-600', 'logo' => $logo('LE', '#fb923c', '#fdba74'), 'route' => route('providers.lesco'), 'tagline' => 'Lahore region'],
+            ['key' => 'mepco', 'label' => 'MEPCO', 'name' => 'Multan Electric Power Company', 'type' => 'electricity', 'initials' => 'ME', 'color' => 'bg-amber-100 text-amber-600', 'logo' => $logo('ME', '#f59e0b', '#facc15'), 'route' => route('providers.mepco'), 'tagline' => 'Multan region'],
+            ['key' => 'fesco', 'label' => 'FESCO', 'name' => 'Faisalabad Electric Supply Company', 'type' => 'electricity', 'initials' => 'FE', 'color' => 'bg-cyan-100 text-cyan-600', 'logo' => $logo('FE', '#06b6d4', '#22d3ee'), 'route' => route('providers.fesco'), 'tagline' => 'Faisalabad region'],
+            ['key' => 'pesco', 'label' => 'PESCO', 'name' => 'Peshawar Electric Supply Company', 'type' => 'electricity', 'initials' => 'PE', 'color' => 'bg-sky-100 text-sky-600', 'logo' => $logo('PE', '#0ea5e9', '#38bdf8'), 'route' => route('providers.pesco'), 'tagline' => 'Peshawar region'],
+            ['key' => 'gepco', 'label' => 'GEPCO', 'name' => 'Gujranwala Electric Power Company', 'type' => 'electricity', 'initials' => 'GE', 'color' => 'bg-blue-100 text-blue-600', 'logo' => $logo('GE', '#2563eb', '#60a5fa'), 'route' => route('providers.gepco'), 'tagline' => 'Gujranwala region'],
+            ['key' => 'hesco', 'label' => 'HESCO', 'name' => 'Hyderabad Electric Supply Company', 'type' => 'electricity', 'initials' => 'HE', 'color' => 'bg-teal-100 text-teal-600', 'logo' => $logo('HE', '#0d9488', '#2dd4bf'), 'route' => route('providers.hesco'), 'tagline' => 'Hyderabad region'],
+            ['key' => 'sepco', 'label' => 'SEPCO', 'name' => 'Sukkur Electric Power Company', 'type' => 'electricity', 'initials' => 'SE', 'color' => 'bg-emerald-100 text-emerald-600', 'logo' => $logo('SE', '#10b981', '#6ee7b7'), 'route' => route('providers.sepco'), 'tagline' => 'Sukkur region'],
+            ['key' => 'qesco', 'label' => 'QESCO', 'name' => 'Quetta Electric Supply Company', 'type' => 'electricity', 'initials' => 'QE', 'color' => 'bg-lime-100 text-lime-600', 'logo' => $logo('QE', '#65a30d', '#a3e635'), 'route' => route('providers.qesco'), 'tagline' => 'Quetta region'],
+            ['key' => 'tesco', 'label' => 'TESCO', 'name' => 'Tribal Electric Supply Company', 'type' => 'electricity', 'initials' => 'TE', 'color' => 'bg-violet-100 text-violet-600', 'logo' => $logo('TE', '#7c3aed', '#a78bfa'), 'route' => route('providers.tesco'), 'tagline' => 'Tribal Areas'],
+            ['key' => 'ke', 'label' => 'K-Electric', 'name' => 'Karachi Electric', 'type' => 'electricity', 'initials' => 'KE', 'color' => 'bg-indigo-100 text-indigo-600', 'logo' => $logo('KE', '#4f46e5', '#8b5cf6'), 'route' => route('providers.kelectric'), 'tagline' => 'Karachi city'],
+            ['key' => 'sngpl', 'label' => 'SNGPL', 'name' => 'Sui Northern Gas Pipelines Ltd.', 'type' => 'gas', 'initials' => 'SN', 'color' => 'bg-slate-100 text-slate-700', 'logo' => $logo('SN', '#475569', '#cbd5e1'), 'route' => route('providers.sngpl'), 'tagline' => 'Punjab & KPK'],
+            ['key' => 'ssgc', 'label' => 'SSGC', 'name' => 'Sui Southern Gas Company', 'type' => 'gas', 'initials' => 'SS', 'color' => 'bg-rose-100 text-rose-600', 'logo' => $logo('SS', '#e11d48', '#fb7185'), 'route' => route('providers.ssgc'), 'tagline' => 'Sindh & Balochistan'],
+            ['key' => 'ptcl', 'label' => 'PTCL', 'name' => 'Pakistan Telecommunication Company Limited', 'type' => 'internet', 'initials' => 'PT', 'color' => 'bg-lime-100 text-lime-700', 'logo' => $logo('PT', '#4d7c0f', '#84cc16'), 'route' => route('providers.ptcl'), 'tagline' => 'Nationwide internet'],
+            ['key' => 'nayatel', 'label' => 'Nayatel', 'name' => 'Nayatel Fiber Internet', 'type' => 'internet', 'initials' => 'NA', 'color' => 'bg-amber-100 text-amber-700', 'logo' => $logo('NA', '#d97706', '#fcd34d'), 'route' => route('providers.nayatel'), 'tagline' => 'Fiber cities'],
+            ['key' => 'stormfiber', 'label' => 'StormFiber', 'name' => 'StormFiber Broadband', 'type' => 'internet', 'initials' => 'SF', 'color' => 'bg-sky-100 text-sky-700', 'logo' => $logo('SF', '#0ea5e9', '#7dd3fc'), 'route' => route('providers.stormfiber'), 'tagline' => 'Fiber broadband'],
+        ];
+    @endphp
+
     <!-- Navbar -->
     <header class="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -171,58 +217,41 @@
 
                             <!-- Custom Options List -->
                             <div class="custom-select-options absolute top-full left-0 right-0 mt-2 bg-white border border-slate-100 rounded-2xl shadow-xl py-2 z-50">
-                                <div class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Popular Companies</div>
+                                @php
+                                    $groups = ['electricity' => 'Electricity Providers', 'gas' => 'Gas Providers', 'internet' => 'Internet Providers'];
+                                @endphp
 
-                                <!-- Option: LESCO -->
-                                <div data-provider-type="electricity" onclick="selectProvider('lesco', 'LESCO', 'LE', 'bg-orange-100 text-orange-600')" class="px-3 py-2.5 mx-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center text-[10px] font-bold ring-2 ring-white">LE</div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-slate-900">LESCO</div>
-                                            <div class="text-[10px] text-slate-500">Lahore Electric Supply</div>
-                                        </div>
-                                    </div>
-                                    <iconify-icon icon="lucide:check" class="text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" width="16"></iconify-icon>
-                                </div>
+                                @foreach ($groups as $type => $heading)
+                                    @php $outerLoop = $loop; @endphp
+                                    <div class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ $heading }}</div>
 
-                                <!-- Option: K-Electric -->
-                                <div data-provider-type="electricity" onclick="selectProvider('ke', 'K-Electric', 'KE', 'bg-blue-100 text-blue-600')" class="px-3 py-2.5 mx-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-[10px] font-bold ring-2 ring-white">KE</div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-slate-900">K-Electric</div>
-                                            <div class="text-[10px] text-slate-500">Karachi Electric</div>
-                                        </div>
-                                    </div>
-                                    <iconify-icon icon="lucide:check" class="text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" width="16"></iconify-icon>
-                                </div>
+                                    @foreach ($providers as $provider)
+                                        @if ($provider['type'] === $type)
+                                            <div
+                                                data-provider-type="{{ $provider['type'] }}"
+                                                data-provider-key="{{ $provider['key'] }}"
+                                                data-provider-name="{{ $provider['label'] }}"
+                                                data-provider-logo="{{ $provider['logo'] }}"
+                                                class="px-3 py-2.5 mx-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors"
+                                                onclick="selectProvider(this)">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-9 h-9 rounded-xl bg-white border border-slate-100 flex items-center justify-center p-1.5 shadow-sm">
+                                                        <img src="{{ $provider['logo'] }}" alt="{{ $provider['label'] }} logo" class="w-full h-full object-contain" loading="lazy">
+                                                    </div>
+                                                    <div>
+                                                        <div class="text-sm font-semibold text-slate-900">{{ $provider['label'] }}</div>
+                                                        <div class="text-[10px] text-slate-500">{{ $provider['name'] }}</div>
+                                                    </div>
+                                                </div>
+                                                <span class="text-[10px] font-semibold uppercase text-slate-400">{{ ucfirst($provider['type']) }}</span>
+                                            </div>
+                                        @endif
+                                    @endforeach
 
-                                <!-- Option: IESCO -->
-                                <div data-provider-type="electricity" onclick="selectProvider('iesco', 'IESCO', 'IE', 'bg-green-100 text-green-600')" class="px-3 py-2.5 mx-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-[10px] font-bold ring-2 ring-white">IE</div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-slate-900">IESCO</div>
-                                            <div class="text-[10px] text-slate-500">Islamabad Electric</div>
-                                        </div>
-                                    </div>
-                                    <iconify-icon icon="lucide:check" class="text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" width="16"></iconify-icon>
-                                </div>
-
-                                <div class="border-t border-slate-100 my-1"></div>
-                                <div class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Gas Providers</div>
-
-                                <!-- Option: SNGPL -->
-                                <div data-provider-type="gas" onclick="selectProvider('sngpl', 'SNGPL', 'SN', 'bg-indigo-100 text-indigo-600')" class="px-3 py-2.5 mx-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px] font-bold ring-2 ring-white">SN</div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-slate-900">SNGPL</div>
-                                            <div class="text-[10px] text-slate-500">Sui Northern Gas</div>
-                                        </div>
-                                    </div>
-                                    <iconify-icon icon="lucide:check" class="text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" width="16"></iconify-icon>
-                                </div>
+                                    @if (! $outerLoop->last)
+                                        <div class="border-t border-slate-100 my-1"></div>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -328,6 +357,39 @@
                         <iconify-icon icon="lucide:user-plus" width="14"></iconify-icon>
                     </a>
                 </div>
+            </div>
+        </div>
+
+        <!-- Supported Providers -->
+        <div class="max-w-5xl mx-auto mt-20">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+                <div>
+                    <p class="text-[11px] font-semibold text-emerald-600 uppercase tracking-wide">Official bill sources</p>
+                    <h2 class="text-lg font-bold text-slate-900">Providers we cover</h2>
+                    <p class="text-xs text-slate-500">Electricity, gas, and internet providers available through CheckBill.pk.</p>
+                </div>
+                <div class="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-3 py-2 text-[11px] font-semibold text-slate-700 shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>{{ count($providers) }} providers live</span>
+                </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach ($providers as $provider)
+                    <a href="{{ $provider['route'] }}" class="group p-4 rounded-2xl bg-white border border-slate-100 hover:border-emerald-200 hover:shadow-lg hover:shadow-emerald-100/50 transition-all duration-200 flex items-start gap-3">
+                        <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center p-2 shadow-sm group-hover:scale-105 transition-transform">
+                            <img src="{{ $provider['logo'] }}" alt="{{ $provider['label'] }} logo" class="w-full h-full object-contain" loading="lazy">
+                        </div>
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <p class="text-sm font-semibold text-slate-900">{{ $provider['label'] }}</p>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-semibold uppercase">{{ $provider['type'] }}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-500 leading-snug">{{ $provider['name'] }}</p>
+                            <p class="text-[10px] text-emerald-600 font-semibold">{{ $provider['tagline'] }}</p>
+                        </div>
+                    </a>
+                @endforeach
             </div>
         </div>
 
@@ -485,16 +547,33 @@
     <!-- Scripts for Custom Dropdown Logic -->
     <script>
         // Simple logic to handle the custom dropdown selection
-        function selectProvider(value, name, initial, colorClass) {
-            // Update Hidden Input
-            document.getElementById('provider-input').value = value;
+        function selectProvider(optionElement) {
+            const providerKey = optionElement.dataset.providerKey;
+            const name = optionElement.dataset.providerName;
+            const type = optionElement.dataset.providerType;
+            const logo = optionElement.dataset.providerLogo;
+            const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+
+            // Update Hidden Inputs
+            if (providerInput) {
+                providerInput.value = providerKey;
+            }
+            const billTypeField = document.getElementById('bill-type-input');
+            if (billTypeField) {
+                billTypeField.value = type;
+            }
 
             // Update Visual Trigger
-            const trigger = document.getElementById('selected-text');
+            const trigger = selectedText || document.getElementById('selected-text');
             trigger.innerHTML = `
                 <div class="flex items-center gap-3">
-                    <div class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${colorClass}">${initial}</div>
-                    <span class="text-slate-900 font-semibold">${name}</span>
+                    <div class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center p-1.5 shadow-sm">
+                        <img src="${logo}" alt="${name} logo" class="w-full h-full object-contain" />
+                    </div>
+                    <div class="flex flex-col leading-tight">
+                        <span class="text-slate-900 font-semibold">${name}</span>
+                        <span class="text-[10px] text-slate-500 uppercase">${typeLabel}</span>
+                    </div>
                 </div>
             `;
             trigger.className = "flex items-center gap-3 text-sm text-slate-900";
@@ -506,6 +585,9 @@
         // Tab switcher logic (Electricity / Gas / Internet)
         const billTypeInput = document.getElementById('bill-type-input');
         const tabButtons = document.querySelectorAll('[data-bill-tab]');
+        const selectedText = document.getElementById('selected-text');
+        const providerInput = document.getElementById('provider-input');
+        const defaultSelectedMarkup = selectedText ? selectedText.innerHTML : '';
 
         function setActiveTab(type) {
             if (billTypeInput) {
@@ -526,13 +608,20 @@
             const providerOptions = document.querySelectorAll('[data-provider-type]');
             providerOptions.forEach((option) => {
                 const providerType = option.getAttribute('data-provider-type');
-                // For now internet reuses electricity providers visually
-                if (type === 'internet') {
-                    option.style.display = providerType === 'electricity' ? 'flex' : 'none';
-                } else {
-                    option.style.display = providerType === type ? 'flex' : 'none';
-                }
+                option.style.display = providerType === type ? 'flex' : 'none';
             });
+
+            // Reset selection if it no longer matches the active tab
+            if (providerInput && providerInput.value) {
+                const selectedOption = document.querySelector(`[data-provider-key="${providerInput.value}"]`);
+                if (!selectedOption || selectedOption.getAttribute('data-provider-type') !== type) {
+                    providerInput.value = '';
+                    if (selectedText) {
+                        selectedText.innerHTML = defaultSelectedMarkup;
+                        selectedText.className = 'flex items-center gap-3 text-sm font-medium text-slate-500';
+                    }
+                }
+            }
         }
 
         tabButtons.forEach((btn) => {
