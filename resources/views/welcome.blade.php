@@ -60,51 +60,53 @@
 </head>
 <body class="premium-mesh text-slate-600 antialiased selection:bg-green-500/20 selection:text-green-700 relative min-h-screen flex flex-col">
 
-    @php
-        $logo = function (string $initials, string $colorStart, string $colorEnd): string {
-            $svg = <<<'SVG'
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img">
-                    <defs>
-                        <linearGradient id="g" x1="0%" x2="100%" y1="0%" y2="100%">
-                            <stop offset="0%" stop-color="COLOR_START" />
-                            <stop offset="100%" stop-color="COLOR_END" />
-                        </linearGradient>
-                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
-                            <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a20" />
-                        </filter>
-                    </defs>
-                    <rect x="8" y="8" width="80" height="80" rx="20" fill="url(#g)" filter="url(#shadow)" />
-                    <rect x="18" y="18" width="60" height="60" rx="16" fill="#ffffff40" stroke="#ffffff80" stroke-width="2" />
-                    <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-family="'Inter', 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="700" fill="#0f172a">
-                        INITIALS
-                    </text>
-                </svg>
-            SVG;
+<body class="premium-mesh text-slate-600 antialiased selection:bg-green-500/20 selection:text-green-700 relative min-h-screen flex flex-col">
 
-            $svg = str_replace(['COLOR_START', 'COLOR_END', 'INITIALS'], [$colorStart, $colorEnd, $initials], $svg);
+@php
+    $providerLogos = [
+        'iesco' => asset('storage/img/iesco.jpg'),
+        'lesco' => asset('storage/img/lesco.png'),
+        'mepco' => asset('storage/img/mepco.png'),
+        'fesco' => asset('storage/img/fesco.png'),
+        'pesco' => asset('storage/img/pesco.png'),
+        'gepco' => asset('storage/img/gepco.png'),
+        'hesco' => asset('storage/img/hesco.jpg'),
+        'sepco' => asset('storage/img/sepco.png'),
+        'qesco' => asset('storage/img/qesco.png'),
+        'tesco' => asset('storage/img/tesco.png'),
+        'ke' => asset('storage/img/kelectric.jpg'),
+        'sngpl' => asset('storage/img/sngpl.png'),
+        'ssgc' => asset('storage/img/ssgc.png'),
+        'ptcl' => asset('storage/img/ptcl.jpg'),
+        'nayatel' => asset('storage/img/nayatel.jpg'),
+        'stormfiber' => asset('storage/img/stormfiber.png'),
+    ];
 
-            return 'data:image/svg+xml,' . rawurlencode($svg);
-        };
+    $providers = [
+        ['key' => 'iesco', 'label' => 'IESCO', 'name' => 'Islamabad Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.iesco'), 'tagline' => 'Islamabad region'],
+        ['key' => 'lesco', 'label' => 'LESCO', 'name' => 'Lahore Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.lesco'), 'tagline' => 'Lahore region'],
+        ['key' => 'mepco', 'label' => 'MEPCO', 'name' => 'Multan Electric Power Company', 'type' => 'electricity', 'route' => route('providers.mepco'), 'tagline' => 'Multan region'],
+        ['key' => 'fesco', 'label' => 'FESCO', 'name' => 'Faisalabad Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.fesco'), 'tagline' => 'Faisalabad region'],
+        ['key' => 'pesco', 'label' => 'PESCO', 'name' => 'Peshawar Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.pesco'), 'tagline' => 'Peshawar region'],
+        ['key' => 'gepco', 'label' => 'GEPCO', 'name' => 'Gujranwala Electric Power Company', 'type' => 'electricity', 'route' => route('providers.gepco'), 'tagline' => 'Gujranwala region'],
+        ['key' => 'hesco', 'label' => 'HESCO', 'name' => 'Hyderabad Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.hesco'), 'tagline' => 'Hyderabad region'],
+        ['key' => 'sepco', 'label' => 'SEPCO', 'name' => 'Sukkur Electric Power Company', 'type' => 'electricity', 'route' => route('providers.sepco'), 'tagline' => 'Sukkur region'],
+        ['key' => 'qesco', 'label' => 'QESCO', 'name' => 'Quetta Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.qesco'), 'tagline' => 'Quetta region'],
+        ['key' => 'tesco', 'label' => 'TESCO', 'name' => 'Tribal Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.tesco'), 'tagline' => 'Tribal Areas'],
+        ['key' => 'ke', 'label' => 'K-Electric', 'name' => 'Karachi Electric', 'type' => 'electricity', 'route' => route('providers.kelectric'), 'tagline' => 'Karachi city'],
+        ['key' => 'sngpl', 'label' => 'SNGPL', 'name' => 'Sui Northern Gas Pipelines Ltd.', 'type' => 'gas', 'route' => route('providers.sngpl'), 'tagline' => 'Punjab & KPK'],
+        ['key' => 'ssgc', 'label' => 'SSGC', 'name' => 'Sui Southern Gas Company', 'type' => 'gas', 'route' => route('providers.ssgc'), 'tagline' => 'Sindh & Balochistan'],
+        ['key' => 'ptcl', 'label' => 'PTCL', 'name' => 'Pakistan Telecommunication Company Limited', 'type' => 'internet', 'route' => route('providers.ptcl'), 'tagline' => 'Nationwide internet'],
+        ['key' => 'nayatel', 'label' => 'Nayatel', 'name' => 'Nayatel Fiber Internet', 'type' => 'internet', 'route' => route('providers.nayatel'), 'tagline' => 'Fiber cities'],
+        ['key' => 'stormfiber', 'label' => 'StormFiber', 'name' => 'StormFiber Broadband', 'type' => 'internet', 'route' => route('providers.stormfiber'), 'tagline' => 'Fiber broadband'],
+    ];
 
-        $providers = [
-            ['key' => 'iesco', 'label' => 'IESCO', 'name' => 'Islamabad Electric Supply Company', 'type' => 'electricity', 'initials' => 'IE', 'color' => 'bg-green-100 text-green-600', 'logo' => $logo('IE', '#22c55e', '#86efac'), 'route' => route('providers.iesco'), 'tagline' => 'Islamabad region'],
-            ['key' => 'lesco', 'label' => 'LESCO', 'name' => 'Lahore Electric Supply Company', 'type' => 'electricity', 'initials' => 'LE', 'color' => 'bg-orange-100 text-orange-600', 'logo' => $logo('LE', '#fb923c', '#fdba74'), 'route' => route('providers.lesco'), 'tagline' => 'Lahore region'],
-            ['key' => 'mepco', 'label' => 'MEPCO', 'name' => 'Multan Electric Power Company', 'type' => 'electricity', 'initials' => 'ME', 'color' => 'bg-amber-100 text-amber-600', 'logo' => $logo('ME', '#f59e0b', '#facc15'), 'route' => route('providers.mepco'), 'tagline' => 'Multan region'],
-            ['key' => 'fesco', 'label' => 'FESCO', 'name' => 'Faisalabad Electric Supply Company', 'type' => 'electricity', 'initials' => 'FE', 'color' => 'bg-cyan-100 text-cyan-600', 'logo' => $logo('FE', '#06b6d4', '#22d3ee'), 'route' => route('providers.fesco'), 'tagline' => 'Faisalabad region'],
-            ['key' => 'pesco', 'label' => 'PESCO', 'name' => 'Peshawar Electric Supply Company', 'type' => 'electricity', 'initials' => 'PE', 'color' => 'bg-sky-100 text-sky-600', 'logo' => $logo('PE', '#0ea5e9', '#38bdf8'), 'route' => route('providers.pesco'), 'tagline' => 'Peshawar region'],
-            ['key' => 'gepco', 'label' => 'GEPCO', 'name' => 'Gujranwala Electric Power Company', 'type' => 'electricity', 'initials' => 'GE', 'color' => 'bg-blue-100 text-blue-600', 'logo' => $logo('GE', '#2563eb', '#60a5fa'), 'route' => route('providers.gepco'), 'tagline' => 'Gujranwala region'],
-            ['key' => 'hesco', 'label' => 'HESCO', 'name' => 'Hyderabad Electric Supply Company', 'type' => 'electricity', 'initials' => 'HE', 'color' => 'bg-teal-100 text-teal-600', 'logo' => $logo('HE', '#0d9488', '#2dd4bf'), 'route' => route('providers.hesco'), 'tagline' => 'Hyderabad region'],
-            ['key' => 'sepco', 'label' => 'SEPCO', 'name' => 'Sukkur Electric Power Company', 'type' => 'electricity', 'initials' => 'SE', 'color' => 'bg-emerald-100 text-emerald-600', 'logo' => $logo('SE', '#10b981', '#6ee7b7'), 'route' => route('providers.sepco'), 'tagline' => 'Sukkur region'],
-            ['key' => 'qesco', 'label' => 'QESCO', 'name' => 'Quetta Electric Supply Company', 'type' => 'electricity', 'initials' => 'QE', 'color' => 'bg-lime-100 text-lime-600', 'logo' => $logo('QE', '#65a30d', '#a3e635'), 'route' => route('providers.qesco'), 'tagline' => 'Quetta region'],
-            ['key' => 'tesco', 'label' => 'TESCO', 'name' => 'Tribal Electric Supply Company', 'type' => 'electricity', 'initials' => 'TE', 'color' => 'bg-violet-100 text-violet-600', 'logo' => $logo('TE', '#7c3aed', '#a78bfa'), 'route' => route('providers.tesco'), 'tagline' => 'Tribal Areas'],
-            ['key' => 'ke', 'label' => 'K-Electric', 'name' => 'Karachi Electric', 'type' => 'electricity', 'initials' => 'KE', 'color' => 'bg-indigo-100 text-indigo-600', 'logo' => $logo('KE', '#4f46e5', '#8b5cf6'), 'route' => route('providers.kelectric'), 'tagline' => 'Karachi city'],
-            ['key' => 'sngpl', 'label' => 'SNGPL', 'name' => 'Sui Northern Gas Pipelines Ltd.', 'type' => 'gas', 'initials' => 'SN', 'color' => 'bg-slate-100 text-slate-700', 'logo' => $logo('SN', '#475569', '#cbd5e1'), 'route' => route('providers.sngpl'), 'tagline' => 'Punjab & KPK'],
-            ['key' => 'ssgc', 'label' => 'SSGC', 'name' => 'Sui Southern Gas Company', 'type' => 'gas', 'initials' => 'SS', 'color' => 'bg-rose-100 text-rose-600', 'logo' => $logo('SS', '#e11d48', '#fb7185'), 'route' => route('providers.ssgc'), 'tagline' => 'Sindh & Balochistan'],
-            ['key' => 'ptcl', 'label' => 'PTCL', 'name' => 'Pakistan Telecommunication Company Limited', 'type' => 'internet', 'initials' => 'PT', 'color' => 'bg-lime-100 text-lime-700', 'logo' => $logo('PT', '#4d7c0f', '#84cc16'), 'route' => route('providers.ptcl'), 'tagline' => 'Nationwide internet'],
-            ['key' => 'nayatel', 'label' => 'Nayatel', 'name' => 'Nayatel Fiber Internet', 'type' => 'internet', 'initials' => 'NA', 'color' => 'bg-amber-100 text-amber-700', 'logo' => $logo('NA', '#d97706', '#fcd34d'), 'route' => route('providers.nayatel'), 'tagline' => 'Fiber cities'],
-            ['key' => 'stormfiber', 'label' => 'StormFiber', 'name' => 'StormFiber Broadband', 'type' => 'internet', 'initials' => 'SF', 'color' => 'bg-sky-100 text-sky-700', 'logo' => $logo('SF', '#0ea5e9', '#7dd3fc'), 'route' => route('providers.stormfiber'), 'tagline' => 'Fiber broadband'],
-        ];
-    @endphp
+    $providers = array_map(function ($provider) use ($providerLogos) {
+        $provider['logo'] = $providerLogos[$provider['key']] ?? asset('storage/img/' . $provider['key'] . '.png');
+
+        return $provider;
+    }, $providers);
+@endphp
 
     <!-- Navbar -->
     <header class="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
