@@ -5,20 +5,20 @@
     <meta name="description" content="Check electricity and gas bills in Pakistan on CheckBill.pk. IESCO, LESCO, KE, SNGPL. Official duplicate bill source with smart reminders.">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    
+
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        
+
         /* Smooth Fade In Animation */
         .animate-fade-up { animation: fadeUp 0.6s ease-out forwards; opacity: 0; transform: translateY(20px); }
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
-        
+
         @keyframes fadeUp {
             to { opacity: 1; transform: translateY(0); }
         }
@@ -38,9 +38,9 @@
         /* Premium Mesh Gradient */
         .premium-mesh {
             background-color: #ffffff;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(145, 63%, 95%, 1) 0, transparent 50%), 
-                radial-gradient(at 50% 0%, hsla(210, 100%, 96%, 1) 0, transparent 50%), 
+            background-image:
+                radial-gradient(at 0% 0%, hsla(145, 63%, 95%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(210, 100%, 96%, 1) 0, transparent 50%),
                 radial-gradient(at 100% 0%, hsla(145, 63%, 95%, 1) 0, transparent 50%);
         }
 
@@ -104,7 +104,7 @@
     </header>
 
     <main class="flex-grow pt-32 pb-20 px-4 sm:px-6 relative overflow-hidden">
-        
+
         <!-- Background Elements -->
         <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-green-200/20 blur-[100px] rounded-full -z-10 pointer-events-none"></div>
 
@@ -119,7 +119,7 @@
                 Check your bill <br>
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">before it arrives.</span>
             </h1>
-            
+
             <p class="text-base sm:text-lg text-slate-500 mb-3 max-w-lg mx-auto leading-relaxed">
                 The fastest way to get your duplicate electricity or gas bill in Pakistan. Official data from LESCO, K-Electric, and SNGPL.
             </p>
@@ -131,7 +131,7 @@
         <!-- Premium Card Widget -->
         <div id="app" class="max-w-md mx-auto animate-fade-up delay-100">
             <div class="relative bg-white rounded-3xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.1)] border border-slate-100 p-2 z-10">
-                
+
                 <!-- Tab Switcher -->
                 <div class="flex p-1 bg-slate-50 rounded-2xl mb-4 border border-slate-100/50">
                     <button type="button" data-bill-tab="electricity" id="tab-electricity" class="flex-1 py-2.5 text-xs tab-btn-active transition-all flex items-center justify-center gap-2">
@@ -148,14 +148,14 @@
                     </button>
                 </div>
 
-                <form action="{{ route('check') }}" method="GET" class="px-4 pb-4 pt-2">
+                <form action="{{ route('bills.check') }}" method="GET" class="px-4 pb-4 pt-2">
                     <!-- Custom Dropdown Component -->
                     <div class="mb-5 relative z-50">
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2 ml-1">Select Provider</label>
-                        
+
                         <!-- Hidden Input for Form Submission -->
                         <input type="hidden" name="provider" id="provider-input" required="">
-                        <input type="hidden" name="bill_type" id="bill-type-input" value="electricity">
+                        <input type="hidden" name="type" id="bill-type-input" value="electricity">
 
                         <!-- Custom Select Trigger -->
                         <div class="custom-select relative">
@@ -172,7 +172,7 @@
                             <!-- Custom Options List -->
                             <div class="custom-select-options absolute top-full left-0 right-0 mt-2 bg-white border border-slate-100 rounded-2xl shadow-xl py-2 z-50">
                                 <div class="px-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">Popular Companies</div>
-                                
+
                                 <!-- Option: LESCO -->
                                 <div data-provider-type="electricity" onclick="selectProvider('lesco', 'LESCO', 'LE', 'bg-orange-100 text-orange-600')" class="px-3 py-2.5 mx-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors">
                                     <div class="flex items-center gap-3">
@@ -240,7 +240,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <iconify-icon icon="lucide:hash" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
                             </div>
-                            <input type="tel" name="ref_no" placeholder="14 digit reference number" class="block w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm">
+                            <input type="tel" name="reference_number" placeholder="14 digit reference number" class="block w-full bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all shadow-sm">
                         </div>
                     </div>
 
@@ -488,7 +488,7 @@
         function selectProvider(value, name, initial, colorClass) {
             // Update Hidden Input
             document.getElementById('provider-input').value = value;
-            
+
             // Update Visual Trigger
             const trigger = document.getElementById('selected-text');
             trigger.innerHTML = `
@@ -498,7 +498,7 @@
                 </div>
             `;
             trigger.className = "flex items-center gap-3 text-sm text-slate-900";
-            
+
             // Close Dropdown
             document.querySelector('.custom-select').classList.remove('active');
         }
