@@ -58,7 +58,6 @@
         }
     </style>
 </head>
-<body class="premium-mesh text-slate-600 antialiased selection:bg-green-500/20 selection:text-green-700 relative min-h-screen flex flex-col">
 
 <body class="premium-mesh text-slate-600 antialiased selection:bg-green-500/20 selection:text-green-700 relative min-h-screen flex flex-col">
 
@@ -665,4 +664,5 @@
         });
     </script>
 
-</body></html>
+</body>
+</html>
