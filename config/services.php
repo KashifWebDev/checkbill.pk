@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'google_analytics' => [
+        'id' => env('GOOGLE_ANALYTICS_ID'),
+    ],
+
+    'clarity' => [
+        'id' => env('MICROSOFT_CLARITY_ID'),
+    ],
+
 ];

@@ -4,157 +4,185 @@
 @section('meta_description', 'Check electricity bills online in Pakistan for IESCO, LESCO, MEPCO, FESCO, PESCO, GEPCO, HESCO, SEPCO, QESCO, TESCO and K-Electric. Learn how to save meters and get reminders with CheckBill.pk.')
 @section('canonical', url('/electricity-bill-online'))
 
+@php
+    $providerLogos = [
+        'iesco' => asset('storage/img/iesco.jpg'),
+        'lesco' => asset('storage/img/lesco.png'),
+        'mepco' => asset('storage/img/mepco.png'),
+        'fesco' => asset('storage/img/fesco.png'),
+        'pesco' => asset('storage/img/pesco.png'),
+        'gepco' => asset('storage/img/gepco.png'),
+        'hesco' => asset('storage/img/hesco.jpg'),
+        'sepco' => asset('storage/img/sepco.png'),
+        'qesco' => asset('storage/img/qesco.png'),
+        'tesco' => asset('storage/img/tesco.png'),
+        'ke' => asset('storage/img/kelectric.jpg'),
+    ];
+
+    $electricityProviders = [
+        ['key' => 'iesco', 'label' => 'IESCO', 'name' => 'Islamabad Electric Supply Company', 'route' => route('providers.iesco'), 'tagline' => 'Islamabad region'],
+        ['key' => 'lesco', 'label' => 'LESCO', 'name' => 'Lahore Electric Supply Company', 'route' => route('providers.lesco'), 'tagline' => 'Lahore region'],
+        ['key' => 'mepco', 'label' => 'MEPCO', 'name' => 'Multan Electric Power Company', 'route' => route('providers.mepco'), 'tagline' => 'Multan region'],
+        ['key' => 'fesco', 'label' => 'FESCO', 'name' => 'Faisalabad Electric Supply Company', 'route' => route('providers.fesco'), 'tagline' => 'Faisalabad region'],
+        ['key' => 'pesco', 'label' => 'PESCO', 'name' => 'Peshawar Electric Supply Company', 'route' => route('providers.pesco'), 'tagline' => 'Peshawar region'],
+        ['key' => 'gepco', 'label' => 'GEPCO', 'name' => 'Gujranwala Electric Power Company', 'route' => route('providers.gepco'), 'tagline' => 'Gujranwala region'],
+        ['key' => 'hesco', 'label' => 'HESCO', 'name' => 'Hyderabad Electric Supply Company', 'route' => route('providers.hesco'), 'tagline' => 'Hyderabad region'],
+        ['key' => 'sepco', 'label' => 'SEPCO', 'name' => 'Sukkur Electric Power Company', 'route' => route('providers.sepco'), 'tagline' => 'Sukkur region'],
+        ['key' => 'qesco', 'label' => 'QESCO', 'name' => 'Quetta Electric Supply Company', 'route' => route('providers.qesco'), 'tagline' => 'Quetta region'],
+        ['key' => 'tesco', 'label' => 'TESCO', 'name' => 'Tribal Electric Supply Company', 'route' => route('providers.tesco'), 'tagline' => 'Tribal Areas'],
+        ['key' => 'ke', 'label' => 'K-Electric', 'name' => 'Karachi Electric', 'route' => route('providers.kelectric'), 'tagline' => 'Karachi city'],
+    ];
+
+    $electricityProviders = array_map(function ($provider) use ($providerLogos) {
+        $provider['logo'] = $providerLogos[$provider['key']] ?? asset('storage/img/' . $provider['key'] . '.png');
+        return $provider;
+    }, $electricityProviders);
+@endphp
+
 @section('content')
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-        <div class="max-w-3xl">
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">
-                Electricity bill online in Pakistan
+    <div class="max-w-6xl mx-auto">
+        <!-- Hero Section -->
+        <div class="text-center mb-12 animate-fade-in-up">
+            <div class="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50/80 backdrop-blur-sm px-4 py-1.5 text-xs font-semibold text-orange-700 mb-6 uppercase tracking-wide">
+                <iconify-icon icon="lucide:zap" width="14"></iconify-icon>
+                {{ count($electricityProviders) }} Electricity Providers
+            </div>
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+                Electricity Bills<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-600 to-yellow-600">Made Simple</span>
             </h1>
-            <p class="text-sm sm:text-base text-slate-600 mb-4">
-                Use CheckBill.pk as your monthly companion for electricity bills across Pakistan. In one place you can
-                check duplicate bills, remember reference numbers and prepare before the due date.
+            <p class="text-lg sm:text-xl text-slate-600 mb-4 max-w-2xl mx-auto leading-relaxed">
+                Check duplicate electricity bills from all major providers across Pakistan. Save your reference numbers once, check every month with one click.
             </p>
-            <p class="text-xs text-slate-500 mb-8">
-                Instead of searching “IESCO bill online”, “LESCO bill online” or “K Electric bill” every month, bookmark this page once
-                and reach all providers from here.
+            <p class="text-sm text-slate-500 mb-8 max-w-xl mx-auto">
+                IESCO, LESCO, K-Electric, MEPCO, FESCO, PESCO, GEPCO, HESCO, SEPCO, QESCO, TESCO – all in one place
             </p>
         </div>
 
-        <div class="grid md:grid-cols-[2fr,3fr] gap-8 items-start">
-            <div class="space-y-4">
-                <div class="rounded-2xl bg-white border border-slate-100 p-5 shadow-sm">
-                    <h2 class="text-sm font-semibold text-slate-900 mb-3">Quick electricity bill lookup</h2>
-                    <form action="{{ route('bills.check') }}" method="GET" class="space-y-3">
-                        <input type="hidden" name="type" value="electricity">
-                        <label class="block text-[11px] font-semibold text-slate-700 mb-1" for="provider">
-                            Select provider
-                        </label>
-                        <select id="provider" name="provider" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
-                            <option value="iesco">IESCO (Islamabad)</option>
-                            <option value="lesco">LESCO (Lahore)</option>
-                            <option value="mepco">MEPCO (Multan)</option>
-                            <option value="fesco">FESCO (Faisalabad)</option>
-                            <option value="pesco">PESCO (Peshawar)</option>
-                            <option value="gepco">GEPCO (Gujranwala)</option>
-                            <option value="hesco">HESCO (Hyderabad)</option>
-                            <option value="sepco">SEPCO (Sukkur)</option>
-                            <option value="qesco">QESCO (Quetta)</option>
-                            <option value="tesco">TESCO (Tribal Areas)</option>
-                            <option value="ke">K-Electric (Karachi)</option>
+        <!-- Quick Check Card -->
+        <div class="max-w-2xl mx-auto mb-16 animate-fade-in-up animate-delay-100">
+            <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-6">
+                <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <iconify-icon icon="lucide:search" width="20" class="text-orange-500"></iconify-icon>
+                    Check Your Electricity Bill
+                </h2>
+                <form action="{{ route('bills.check') }}" method="GET" class="space-y-5">
+                    <input type="hidden" name="type" value="electricity">
+                    
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Select Provider</label>
+                        <select name="provider" required class="w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl px-4 py-4 text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all">
+                            <option value="">Choose your electricity company...</option>
+                            @foreach ($electricityProviders as $provider)
+                                <option value="{{ $provider['key'] }}">{{ $provider['label'] }} - {{ $provider['tagline'] }}</option>
+                            @endforeach
                         </select>
+                    </div>
 
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-700 mb-1" for="reference_number">
-                                Reference number
-                            </label>
-                            <input type="text" id="reference_number" name="reference_number"
-                                   placeholder="Enter 14 digit reference number"
-                                   class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm focus:border-green-500 focus:ring-2 focus:ring-green-500/20">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Reference Number</label>
+                            <button type="button" class="text-[11px] font-medium text-orange-600 hover:text-orange-700 hover:underline flex items-center gap-1">
+                                <iconify-icon icon="lucide:help-circle" width="12"></iconify-icon>
+                                Where to find?
+                            </button>
                         </div>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <iconify-icon icon="lucide:hash" width="18" class="text-slate-400 group-focus-within:text-orange-500 transition-colors"></iconify-icon>
+                            </div>
+                            <input type="tel" name="reference_number" placeholder="Enter your 14-digit reference number" required class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all">
+                        </div>
+                    </div>
 
-                        <button type="submit"
-                                class="w-full rounded-xl bg-slate-900 text-white text-sm font-semibold py-3 shadow-sm hover:bg-slate-800 transition">
-                            Check duplicate bill
-                        </button>
-                    </form>
                     @guest
-                        <p class="mt-3 text-[11px] text-slate-500">
-                            Want to save this meter for one-click checks next month?
-                            <a href="{{ route('register') }}" class="font-semibold text-green-700 hover:text-green-800">Create a free account</a>.
-                        </p>
+                        <div class="flex items-center gap-2 opacity-60">
+                            <input type="checkbox" class="w-4 h-4 rounded border-slate-300 text-orange-600 cursor-not-allowed" disabled>
+                            <label class="text-xs text-slate-600 select-none">Save this bill for quick access next month</label>
+                        </div>
+                        <a href="{{ route('register') }}" class="inline-flex items-center gap-2 text-xs font-semibold text-orange-700 hover:text-orange-800 group">
+                            <iconify-icon icon="lucide:arrow-right" width="12" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+                            Create free account to save bills & get email reminders
+                        </a>
                     @endguest
-                </div>
 
-                <div class="rounded-2xl bg-slate-900 text-slate-50 p-5 space-y-2">
-                    <p class="text-xs font-semibold text-emerald-300">Why create an account?</p>
-                    <ul class="text-[11px] space-y-1.5">
-                        <li>Save all your electricity meters (home, office, parents) once.</li>
-                        <li>Next month just open your dashboard and tap “Check bill”.</li>
-                        <li>See a simple history of how much you paid over time.</li>
-                        <li>Get gentle email reminders before the due date.</li>
-                    </ul>
-                </div>
-            </div>
+                    @auth
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="save-bill" name="save_bill" class="w-4 h-4 rounded border-slate-300 text-orange-600 focus:ring-orange-500 cursor-pointer accent-orange-600">
+                            <label for="save-bill" class="text-xs text-slate-600 select-none cursor-pointer">Save this bill to my dashboard</label>
+                        </div>
+                    @endauth
 
-            <div class="space-y-8 text-[13px] leading-relaxed text-slate-700">
-                <section>
-                    <h2 class="text-sm font-semibold text-slate-900 mb-2">All electricity providers in one place</h2>
-                    <p class="mb-2">
-                        CheckBill.pk brings the major Pakistani electricity companies into a single calm interface. Whether your
-                        meter is in Islamabad, Lahore, Karachi, Multan or Peshawar, you do not need to remember different URLs.
-                    </p>
-                    <ul class="list-disc list-inside text-slate-600 space-y-1 mb-3">
-                        <li><a href="{{ route('providers.iesco') }}" class="text-green-700 hover:text-green-800 font-medium">IESCO bill online</a></li>
-                        <li>LESCO, MEPCO, FESCO, PESCO, GEPCO, HESCO, SEPCO, QESCO, TESCO</li>
-                        <li>K-Electric bill online for Karachi users</li>
-                    </ul>
-                    <p>
-                        Over time you can save each meter in your account and turn this page into a launchpad for the bills you
-                        actually care about, instead of a long list you have to search through every month.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="text-sm font-semibold text-slate-900 mb-2">How to check an electricity bill online</h2>
-                    <p class="mb-2">
-                        For most Pakistani distribution companies the process is very similar. You only need the reference number
-                        printed on your physical bill.
-                    </p>
-                    <ol class="list-decimal list-inside space-y-1 text-slate-600 mb-2">
-                        <li>Select your company from the provider dropdown above.</li>
-                        <li>Enter the reference number exactly as shown on your bill.</li>
-                        <li>Tap “Check duplicate bill” to see placeholder details for now.</li>
-                        <li>Once integrations are live, you will see bill amount, due date and payable after due date.</li>
-                    </ol>
-                    <p>
-                        If you are not sure where to find the reference number, our detailed provider pages such as the
-                        <a href="{{ route('providers.iesco') }}" class="text-green-700 hover:text-green-800 font-medium">IESCO bill online guide</a>
-                        include screenshots and step-by-step help.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="text-sm font-semibold text-slate-900 mb-2">Why saving meters matters</h2>
-                    <p class="mb-2">
-                        Most Pakistani households now manage several electricity bills at once – home, parents, a small office or
-                        shop. Finding and typing reference numbers again and again is the small annoying task that eats your time.
-                    </p>
-                    <p class="mb-2">
-                        When you create a CheckBill.pk account, you can save each meter once. The next month you simply recognise
-                        the meter name – “Home”, “Parents house”, “Office” – and click “Check bill”. This turns a 2–3 minute task
-                        per bill into a few seconds.
-                    </p>
-                    <p>
-                        It also builds a quiet history. Over time you can see how your units and amounts move, which is useful
-                        in months of heavy load-shedding or price changes.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="text-sm font-semibold text-slate-900 mb-2">Roman Urdu explanation</h2>
-                    <p class="text-[12px] text-slate-600">
-                        Agar aap soch rahe hain “electricity bill online kaise check karun?”, to CheckBill.pk aap ke liye bana hai.
-                        Yahan pe aap IESCO, LESCO, MEPCO ya kisi bhi company ka “duplicate bill” sirf reference number se dekh
-                        sakte hain. Har mahine Google pe “IESCO bill online” search karne ki zaroorat nahi rehti.
-                        <br><br>
-                        Aap sirf ek dafa meter ka reference number save kar dein. Agle mahine jab bill ka khayal aaye, bas
-                        CheckBill.pk kholen, “Home” ya “Office” select karein aur bill foran saamne aa jayega. Isi tarah due date
-                        bhi nazar aa jayegi, taake aap late payment surcharge se bach sakte hain. Ye sab free hai, sirf email
-                        se account banta hai, koi CNIC ya extra details nahi mangte.
-                    </p>
-                </section>
-
-                <section>
-                    <h2 class="text-sm font-semibold text-slate-900 mb-2">Soft signup invitation</h2>
-                    <p class="text-[12px] text-slate-600">
-                        You can freely use this page to check any electricity bill in Pakistan. When you are ready to make life
-                        easier for your future self, create a free account so CheckBill.pk can remember your meters and gently
-                        remind you before the last date.
-                    </p>
-                </section>
+                    <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group">
+                        <span class="relative z-10 flex items-center justify-center gap-2">
+                            Check My Electricity Bill
+                            <iconify-icon icon="lucide:arrow-right" width="18" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+                        </span>
+                    </button>
+                </form>
             </div>
         </div>
+
+        <!-- All Providers Grid -->
+        <div class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-900 mb-4">All Electricity Providers</h2>
+                <p class="text-slate-600 max-w-xl mx-auto">Choose your provider to check bills or learn more about each company</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach ($electricityProviders as $provider)
+                    <a href="{{ $provider['route'] }}" class="group p-5 rounded-2xl bg-white border-2 border-slate-100 hover:border-orange-300 hover:shadow-xl transition-all duration-200">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center p-3 shadow-sm group-hover:scale-110 transition-transform">
+                                <img src="{{ $provider['logo'] }}" alt="{{ $provider['label'] }} logo" class="w-full h-full object-contain" loading="lazy">
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <p class="text-sm font-bold text-slate-900 truncate">{{ $provider['label'] }}</p>
+                                </div>
+                                <p class="text-[11px] text-slate-500 leading-snug line-clamp-2">{{ $provider['name'] }}</p>
+                                <p class="text-[10px] text-orange-600 font-semibold mt-1">{{ $provider['tagline'] }}</p>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="grid md:grid-cols-2 gap-6 mb-16">
+            <div class="bg-white rounded-2xl p-6 border-2 border-slate-100">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 text-white flex items-center justify-center mb-4 shadow-lg">
+                    <iconify-icon icon="lucide:clock" width="24"></iconify-icon>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Save Time Every Month</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">Instead of searching "IESCO bill online" or "LESCO bill check" every month, save your reference number once and check with one click.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 border-2 border-slate-100">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 text-white flex items-center justify-center mb-4 shadow-lg">
+                    <iconify-icon icon="lucide:bell" width="24"></iconify-icon>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Never Miss a Due Date</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">Get email reminders before your electricity bill due date. Avoid late payment surcharges and keep your connection active.</p>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        @guest
+        <div class="max-w-4xl mx-auto text-center mb-12">
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-12 border-2 border-orange-400/30 shadow-2xl">
+                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Ready to simplify your electricity bills?</h2>
+                <p class="text-lg text-slate-300 mb-8 max-w-xl mx-auto">
+                    Create a free account to save all your meters and check bills every month with one click
+                </p>
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-3 rounded-full bg-orange-500 px-8 py-4 text-base font-bold text-white hover:bg-orange-400 transition shadow-xl hover:scale-105">
+                    <iconify-icon icon="lucide:user-plus" width="20"></iconify-icon>
+                    Create Your Free Account
+                </a>
+            </div>
+        </div>
+        @endguest
     </div>
 @endsection
-
-

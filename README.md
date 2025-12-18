@@ -1,59 +1,342 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pakistan Utility Bills Web App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Project Overview
 
-## About Laravel
+This project is a Laravel based web application designed to become **Pakistan’s default utility bill companion**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This is not a one time bill checking website.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The long term goal is to build a **habit forming product** that Pakistani users instinctively return to every month when thinking about electricity, gas, or internet bills.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The short term success metric is **user signup**.  
+The long term success metric is **monthly retention**.
 
-## Learning Laravel
+SEO is the primary acquisition channel.  
+UX and perceived premium quality drive conversion and loyalty.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Core Problem We Are Solving
 
-## Laravel Sponsors
+Pakistani users face multiple problems with utility bills:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Bills arrive unpredictably
+- Official provider websites are slow, confusing, or unreliable
+- Users forget due dates and incur late payment surcharges
+- Reference numbers are lost or re entered every month
+- There is no single place to manage all utility bills
 
-### Premium Partners
+Existing solutions feel:
+- Government style
+- Cluttered
+- Trustless
+- One time use
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+This project aims to fix that.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Product Vision
 
-## Code of Conduct
+When a user thinks:
+- Has my bill arrived
+- What is my due date
+- How much was last month
+- Let me quickly check my bill
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+This app should be the **first and default choice**.
 
-## Security Vulnerabilities
+The product must feel:
+- Calm
+- Clean
+- Premium
+- Trustworthy
+- Modern
+- Purposeful
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Technology Stack
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Laravel (Backend and routing)
+- Blade templates (Server side rendering)
+- Tailwind CSS (UI styling)
+- Minimal JavaScript (Performance first)
+- MySQL or compatible database
+- SEO first architecture
+
+No SPA.
+No heavy frontend frameworks.
+Fast page loads are critical.
+
+---
+
+## Authentication Status
+
+Authentication is already implemented.
+
+The following pages and flows already exist and must not be rebuilt:
+- Login
+- Signup
+- Dashboard
+- Auth middleware
+- User session handling
+
+All new features must **integrate into the existing auth system**.
+
+---
+
+## High Level Architecture
+
+### Controllers
+
+- `PageController`
+  - Handles all SEO pages
+  - Provider pages
+  - Category hub pages
+  - Guides and evergreen content
+
+- `BillController`
+  - Handles bill lookup flow
+  - Input validation
+  - Result rendering
+  - Noindex result pages
+
+### Views
+
+- `layouts/`
+  - Base Blade layout
+  - Handles meta tags, canonical URLs, schema injection
+
+- `hubs/`
+  - electricity.blade.php
+  - gas.blade.php
+  - internet.blade.php
+
+- `providers/`
+  - iesco.blade.php
+  - lesco.blade.php
+  - sngpl.blade.php
+  - Other providers follow same structure
+
+- `bill/`
+  - result.blade.php
+
+- `dashboard/`
+  - Existing dashboard views
+  - Saved bills integration
+
+---
+
+## SEO Strategy (Critical)
+
+SEO is the primary growth channel.
+
+### Entry Points
+
+Users land mostly on:
+- Provider pages
+- Category hub pages
+- Guide pages
+
+Homepage is secondary.
+
+---
+
+### Provider Pages
+
+Each utility provider has its own page.
+
+Examples:
+- /iesco-bill-online
+- /lesco-bill-online
+- /sngpl-bill-online
+- /ptcl-bill-online
+
+Each provider page includes:
+- Unique title and meta description
+- One H1 with primary keyword
+- Pre selected bill check form
+- Clear explanation of value
+- Signup persuasion blocks
+- Detailed content sections
+- FAQ with FAQPage JSON LD
+- Roman Urdu content block
+- Internal links
+- Minimum 700 words of unique content
+
+These pages are **fully indexable**.
+
+---
+
+### Category Hub Pages
+
+Category hubs act as SEO authority pages and navigation targets.
+
+Routes:
+- /electricity-bill-online
+- /gas-bill-online
+- /internet-bill-online
+
+Each hub page:
+- Targets broad keywords
+- Lists all providers
+- Links to provider pages
+- Explains why saving bills matters
+- Contains soft signup CTAs
+
+---
+
+### Result Pages
+
+Bill result pages must **never be indexed**.
+
+Implementation:
+- meta robots noindex, nofollow
+- canonical pointing back to provider page
+
+Reason:
+- Prevent infinite parameter indexing
+- Keep SEO clean and controlled
+
+---
+
+## Bill Lookup Flow
+
+All bill lookup forms submit to:
+
+GET /check-duplicate-bill
+
+Parameters:
+- type (electricity, gas, internet)
+- provider
+- reference_number
+
+Current behaviour:
+- Inputs validated
+- Provider normalised
+- Reference number masked
+- Placeholder result rendered
+
+Real bill fetching will be integrated later.
+
+---
+
+## User Retention Strategy
+
+### Signup is the main conversion
+
+Checking a bill is the hook.  
+Saving the bill is the habit.  
+Signup enables ownership.
+
+UX must always communicate:
+- Save time next month
+- One click bill checking
+- Bill history
+- Due date awareness
+- Centralised dashboard
+
+No aggressive popups.
+No forced modals.
+
+---
+
+### Saved Bills
+
+- Logged in users can save:
+  - Provider
+  - Reference number
+  - Nickname
+
+- Saved bills appear in dashboard
+- Each saved bill shows:
+  - Provider name
+  - Last checked date
+  - Check now button
+
+Guest users:
+- See benefits explanation
+- Encouraged to sign up
+
+---
+
+## UX Philosophy
+
+This app must not feel like a typical Pakistani utility website.
+
+Principles:
+- Minimal
+- Calm spacing
+- Clear hierarchy
+- Short helpful copy
+- No clutter
+- Premium visual tone
+
+UX patterns to reinforce habit:
+- Recognition (welcome back, last checked)
+- Reduction (one click checking)
+- Anticipation (bill expected soon)
+- Ownership (your bills, your dashboard)
+
+---
+
+## Performance Rules
+
+- Minimal JavaScript
+- No blocking scripts
+- Mobile first layouts
+- Fast initial render
+- SEO friendly HTML
+
+---
+
+## Routing Principles
+
+- All routes are named
+- Slugs are human readable
+- URLs reflect search intent
+- No query based SEO pages
+
+---
+
+## Future Roadmap (Do Not Implement Yet)
+
+- Real time bill fetching
+- Email reminders
+- SMS reminders
+- Bill analytics
+- Monthly spending trends
+- Payment integrations
+- PWA support
+
+These are intentionally deferred.
+
+---
+
+## Development Guidelines
+
+When adding new features, always ask:
+
+- Does this improve SEO reach
+- Does this improve user trust
+- Does this encourage signup
+- Does this increase likelihood of return visit
+
+If the answer is no, rethink the change.
+
+---
+
+## Final Note for AI Editors
+
+This project prioritises:
+1. SEO driven traffic
+2. Premium UX
+3. Habit formation
+4. Signup conversion
+5. Long term retention
+
+Do not optimise for quick hacks or shortcuts.
+
+Build deliberately.
+
