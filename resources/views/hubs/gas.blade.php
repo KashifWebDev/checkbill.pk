@@ -21,28 +21,30 @@
         })
         ->values()
         ->toArray();
+    
+    $breadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => 'Home',
+                'item' => $baseUrl . '/',
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => 'Gas Bill Online',
+                'item' => $baseUrl . '/gas-bill-online',
+            ],
+        ],
+    ];
 @endphp
 
 @push('schema')
 <script type="application/ld+json">
-{!! json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'BreadcrumbList',
-    'itemListElement' => [
-        [
-            '@type' => 'ListItem',
-            'position' => 1,
-            'name' => 'Home',
-            'item' => $baseUrl . '/',
-        ],
-        [
-            '@type' => 'ListItem',
-            'position' => 2,
-            'name' => 'Gas Bill Online',
-            'item' => $baseUrl . '/gas-bill-online',
-        ],
-    ],
-], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endpush
 

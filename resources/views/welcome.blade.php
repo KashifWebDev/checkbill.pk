@@ -24,60 +24,66 @@
         ->toArray();
 @endphp
 
+@php
+    $breadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => 'Home',
+                'item' => $baseUrl . '/',
+            ],
+        ],
+    ];
+    
+    $faqSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => [
+            [
+                '@type' => 'Question',
+                'name' => 'Is CheckBill.pk really free?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'Yes, completely free. Checking bills, saving reference numbers, and getting reminders costs nothing. No hidden charges, no premium tiers.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Is the bill data official and accurate?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'We fetch duplicate bill data directly from the same official provider systems used by LESCO, IESCO, K-Electric, SNGPL, and other companies. The bills are identical to what you\'d get from their official websites.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Is my data safe and private?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'We only use your email to send bill reminders. We never share your data with third parties, and you can delete your account and all saved bills anytime from your dashboard.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Do I need to create an account to check bills?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'No, you can check bills without an account. However, creating a free account lets you save reference numbers, get email reminders, and access your bill history from one dashboard.',
+                ],
+            ],
+        ],
+    ];
+@endphp
+
 @push('schema')
 <script type="application/ld+json">
-{!! json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'BreadcrumbList',
-    'itemListElement' => [
-        [
-            '@type' => 'ListItem',
-            'position' => 1,
-            'name' => 'Home',
-            'item' => $baseUrl . '/',
-        ],
-    ],
-], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 <script type="application/ld+json">
-{!! json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'FAQPage',
-    'mainEntity' => [
-        [
-            '@type' => 'Question',
-            'name' => 'Is CheckBill.pk really free?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'Yes, completely free. Checking bills, saving reference numbers, and getting reminders costs nothing. No hidden charges, no premium tiers.',
-            ],
-        ],
-        [
-            '@type' => 'Question',
-            'name' => 'Is the bill data official and accurate?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'We fetch duplicate bill data directly from the same official provider systems used by LESCO, IESCO, K-Electric, SNGPL, and other companies. The bills are identical to what you\'d get from their official websites.',
-            ],
-        ],
-        [
-            '@type' => 'Question',
-            'name' => 'Is my data safe and private?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'We only use your email to send bill reminders. We never share your data with third parties, and you can delete your account and all saved bills anytime from your dashboard.',
-            ],
-        ],
-        [
-            '@type' => 'Question',
-            'name' => 'Do I need to create an account to check bills?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'No, you can check bills without an account. However, creating a free account lets you save reference numbers, get email reminders, and access your bill history from one dashboard.',
-            ],
-        ],
-    ],
-], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endpush
 

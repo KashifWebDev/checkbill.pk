@@ -30,86 +30,93 @@
             $relatedProviders[] = $allProviders[$relatedKey];
         }
     }
+    
+    // Build FAQ schema
+    $faqSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => [
+            [
+                '@type' => 'Question',
+                'name' => 'How can I check my IESCO bill online?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'To check your IESCO bill online, select IESCO as the provider on CheckBill.pk, enter your 14 digit reference number from the top right of your bill and click Check duplicate bill.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Where can I find my IESCO reference number?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'Your IESCO reference number is printed in the top section of your physical bill, usually labelled as Reference No or Consumer No. It is a 14 digit number often grouped with dashes.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Can I pay my IESCO bill online?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'Yes. You can pay your IESCO bill through internet banking, mobile wallets like Easypaisa and JazzCash or through your bank\'s mobile app by entering the reference number.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'What happens if I pay my IESCO bill after the due date?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'If you pay your IESCO bill after the due date, a late payment surcharge is added and the amount payable increases. CheckBill.pk helps you see due dates early so you can avoid this fee.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Is CheckBill.pk an official IESCO website?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'CheckBill.pk is not an official IESCO website. It is a companion tool that helps you manage IESCO and other Pakistani utility bills from one dashboard using official data sources.',
+                ],
+            ],
+        ],
+    ];
+    
+    // Build breadcrumb schema
+    $breadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => 'Home',
+                'item' => $baseUrl . '/',
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => $provider['hub_name'],
+                'item' => $baseUrl . $provider['hub_url'],
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 3,
+                'name' => $provider['name'] . ' Bill Online',
+                'item' => $canonicalUrl,
+            ],
+        ],
+    ];
 @endphp
 
 @section('title', $title)
 @section('meta_description', $metaDescription)
 @section('canonical', $canonicalUrl)
+@section('robots', 'index,follow')
 
 @push('schema')
 <script type="application/ld+json">
-{!! json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'FAQPage',
-    'mainEntity' => [
-        [
-            '@type' => 'Question',
-            'name' => 'How can I check my IESCO bill online?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'To check your IESCO bill online, select IESCO as the provider on CheckBill.pk, enter your 14 digit reference number from the top right of your bill and click Check duplicate bill.',
-            ],
-        ],
-        [
-            '@type' => 'Question',
-            'name' => 'Where can I find my IESCO reference number?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'Your IESCO reference number is printed in the top section of your physical bill, usually labelled as Reference No or Consumer No. It is a 14 digit number often grouped with dashes.',
-            ],
-        ],
-        [
-            '@type' => 'Question',
-            'name' => 'Can I pay my IESCO bill online?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'Yes. You can pay your IESCO bill through internet banking, mobile wallets like Easypaisa and JazzCash or through your bank\'s mobile app by entering the reference number.',
-            ],
-        ],
-        [
-            '@type' => 'Question',
-            'name' => 'What happens if I pay my IESCO bill after the due date?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'If you pay your IESCO bill after the due date, a late payment surcharge is added and the amount payable increases. CheckBill.pk helps you see due dates early so you can avoid this fee.',
-            ],
-        ],
-        [
-            '@type' => 'Question',
-            'name' => 'Is CheckBill.pk an official IESCO website?',
-            'acceptedAnswer' => [
-                '@type' => 'Answer',
-                'text' => 'CheckBill.pk is not an official IESCO website. It is a companion tool that helps you manage IESCO and other Pakistani utility bills from one dashboard using official data sources.',
-            ],
-        ],
-    ],
-], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 <script type="application/ld+json">
-{!! json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'BreadcrumbList',
-    'itemListElement' => [
-        [
-            '@type' => 'ListItem',
-            'position' => 1,
-            'name' => 'Home',
-            'item' => $baseUrl . '/',
-        ],
-        [
-            '@type' => 'ListItem',
-            'position' => 2,
-            'name' => $provider['hub_name'],
-            'item' => $baseUrl . $provider['hub_url'],
-        ],
-        [
-            '@type' => 'ListItem',
-            'position' => 3,
-            'name' => $provider['name'] . ' Bill Online',
-            'item' => $canonicalUrl,
-        ],
-    ],
-], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endpush
 
@@ -141,8 +148,8 @@
         </div>
 
         <!-- Quick Check Card -->
-        <div class="max-w-2xl mx-auto mb-16 animate-fade-in-up animate-delay-100">
-            <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-6">
+        <div class="max-w-2xl mx-auto mb-12 md:mb-16 animate-fade-in-up animate-delay-100">
+            <div class="bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6">
                 <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <iconify-icon icon="lucide:search" width="20" class="{{ $iconColor }}"></iconify-icon>
                     Check Your {{ $provider['name'] }} Bill
@@ -164,7 +171,7 @@
                                 <iconify-icon icon="lucide:hash" width="18" class="text-slate-400 group-focus-within:text-orange-500 transition-colors"></iconify-icon>
                             </div>
                             <input type="text" name="reference_number" placeholder="Enter the number printed on your bill" required
-                                   class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 {{ $focusRing }} transition-all">
+                                   class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-base sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 {{ $focusRing }} transition-all min-h-[48px]">
                         </div>
                         <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
                             <iconify-icon icon="lucide:info" width="12"></iconify-icon>
@@ -190,7 +197,7 @@
                         </div>
                     @endauth
 
-                    <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r {{ $buttonGradient }} py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group">
+                    <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r {{ $buttonGradient }} py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group min-h-[48px]">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             Check My {{ $provider['name'] }} Bill
                             <iconify-icon icon="lucide:arrow-right" width="18" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
@@ -206,13 +213,17 @@
                     <iconify-icon icon="lucide:save" width="20" class="text-emerald-600"></iconify-icon>
                     Save this bill for next month
                 </h3>
-                <p class="text-sm text-slate-700 mb-4">Create a free account and never type this reference number again.</p>
+                <p class="text-sm text-slate-700 mb-3">Create a free account and never type this reference number again. Check your IESCO bill every month with one click from your dashboard.</p>
+                <p class="text-xs text-slate-600 mb-4 flex items-center gap-1">
+                    <iconify-icon icon="lucide:shield-check" width="14" class="text-emerald-600"></iconify-icon>
+                    <span>100% free forever • No spam • No credit card required</span>
+                </p>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <a href="{{ route('register') }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+                    <a href="{{ route('register') }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all min-h-[48px]">
                         <iconify-icon icon="lucide:user-plus" width="16"></iconify-icon>
                         Create free account
                     </a>
-                    <a href="{{ route('login') }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-emerald-200 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition">
+                    <a href="{{ route('login') }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-emerald-200 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition min-h-[48px]">
                         <iconify-icon icon="lucide:log-in" width="16"></iconify-icon>
                         Login
                     </a>
@@ -395,12 +406,13 @@
         <!-- CTA Section -->
         @guest
         <div class="max-w-4xl mx-auto text-center mb-12">
-            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-12 border-2 {{ $ctaBorder }} shadow-2xl">
-                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Save this {{ $provider['name'] }} meter for next month</h2>
-                <p class="text-lg text-slate-300 mb-8 max-w-xl mx-auto">
-                    Create a free account to save your reference number and check bills every month with one click
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 md:p-12 border-2 {{ $ctaBorder }} shadow-2xl">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">Save this {{ $provider['name'] }} meter for next month</h2>
+                <p class="text-base sm:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
+                    Create a free account to save your reference number and check bills every month with one click. Never miss a due date again.
                 </p>
-                <a href="{{ route('register') }}" class="inline-flex items-center gap-3 rounded-full {{ $ctaButton }} px-8 py-4 text-base font-bold text-white transition shadow-xl hover:scale-105">
+                <p class="text-xs text-slate-400 mb-6">100% free forever • No spam • No credit card required</p>
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-3 rounded-full {{ $ctaButton }} px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-bold text-white transition shadow-xl hover:scale-105 min-h-[48px]">
                     <iconify-icon icon="lucide:user-plus" width="20"></iconify-icon>
                     Create Your Free Account
                 </a>

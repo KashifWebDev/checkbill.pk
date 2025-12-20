@@ -52,6 +52,12 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('dashboard');
 
+// Bill management routes
+Route::middleware('auth')->group(function () {
+    Route::put('/dashboard/bills/{savedBill}', [BillController::class, 'update'])->name('bills.update');
+    Route::delete('/dashboard/bills/{savedBill}', [BillController::class, 'destroy'])->name('bills.destroy');
+});
+
 // Robots.txt
 Route::get('/robots.txt', function () {
     $baseUrl = config('app.url');

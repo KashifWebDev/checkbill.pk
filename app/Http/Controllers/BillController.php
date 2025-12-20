@@ -60,6 +60,9 @@ class BillController extends Controller
                         'last_checked_at' => now(),
                     ],
                 );
+                
+                // Redirect to dashboard after saving
+                return redirect()->route('dashboard')->with('success', 'Bill saved successfully!');
             }
         }
 
@@ -71,6 +74,36 @@ class BillController extends Controller
             'type' => $provider['type'],
             'savedBill' => $savedBill,
         ]);
+    }
+
+    public function update(Request $request, SavedBill $savedBill)
+    {
+        // Ensure the bill belongs to the authenticated user
+        if ($savedBill->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'nickname' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $savedBill->update([
+            'nickname' => !empty(trim($data['nickname'] ?? '')) ? trim($data['nickname']) : null,
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Bill updated successfully!');
+    }
+
+    public function destroy(Request $request, SavedBill $savedBill)
+    {
+        // Ensure the bill belongs to the authenticated user
+        if ($savedBill->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $savedBill->delete();
+
+        return redirect()->route('dashboard')->with('success', 'Bill deleted successfully!');
     }
 
     protected function maskReference(string $reference): string

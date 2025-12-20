@@ -43,33 +43,87 @@
 @section('title', $title)
 @section('meta_description', $metaDescription)
 @section('canonical', $canonicalUrl)
+@section('robots', 'index,follow')
 
 @push('schema')
+@php
+    $faqSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'FAQPage',
+        'mainEntity' => [
+            [
+                '@type' => 'Question',
+                'name' => 'How can I check my ' . $provider['name'] . ' bill online?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'To check your ' . $provider['name'] . ' ' . strtolower($provider['utility_type_label']) . ' bill online, select ' . $provider['name'] . ' as the provider on CheckBill.pk, enter your reference number and click Check duplicate bill. You will see the bill amount, due date, and billing month.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Where can I find my ' . $provider['name'] . ' reference number?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'Your ' . $provider['name'] . ' reference number is printed in the top section of your physical bill, usually labelled as Reference No or Consumer No. It is typically a 14 digit number often grouped with dashes.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Can I pay my ' . $provider['name'] . ' bill online?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'Yes. You can pay your ' . $provider['name'] . ' bill through internet banking, mobile wallets like Easypaisa and JazzCash or through your bank\'s mobile app by entering the reference number.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'What happens if I pay my ' . $provider['name'] . ' bill after the due date?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'If you pay your ' . $provider['name'] . ' bill after the due date, a late payment surcharge is added and the amount payable increases. CheckBill.pk helps you see due dates early so you can avoid this fee.',
+                ],
+            ],
+            [
+                '@type' => 'Question',
+                'name' => 'Is CheckBill.pk an official ' . $provider['name'] . ' website?',
+                'acceptedAnswer' => [
+                    '@type' => 'Answer',
+                    'text' => 'CheckBill.pk is not an official ' . $provider['name'] . ' website. It is a companion tool that helps you manage ' . $provider['name'] . ' and other Pakistani utility bills from one dashboard using official data sources.',
+                ],
+            ],
+        ],
+    ];
+    
+    $breadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => 'Home',
+                'item' => $baseUrl . '/',
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => $provider['hub_name'],
+                'item' => $baseUrl . $provider['hub_url'],
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 3,
+                'name' => $provider['name'] . ' Bill Online',
+                'item' => $canonicalUrl,
+            ],
+        ],
+    ];
+@endphp
 <script type="application/ld+json">
-{!! json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'BreadcrumbList',
-    'itemListElement' => [
-        [
-            '@type' => 'ListItem',
-            'position' => 1,
-            'name' => 'Home',
-            'item' => $baseUrl . '/',
-        ],
-        [
-            '@type' => 'ListItem',
-            'position' => 2,
-            'name' => $provider['hub_name'],
-            'item' => $baseUrl . $provider['hub_url'],
-        ],
-        [
-            '@type' => 'ListItem',
-            'position' => 3,
-            'name' => $provider['name'] . ' Bill Online',
-            'item' => $canonicalUrl,
-        ],
-    ],
-], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+{!! json_encode($faqSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+<script type="application/ld+json">
+{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endpush
 
@@ -166,13 +220,17 @@
                     <iconify-icon icon="lucide:save" width="20" class="text-emerald-600"></iconify-icon>
                     Save this bill for next month
                 </h3>
-                <p class="text-sm text-slate-700 mb-4">Create a free account and never type this reference number again.</p>
+                <p class="text-sm text-slate-700 mb-3">Create a free account and never type this reference number again. Check your {{ $provider['name'] }} bill every month with one click from your dashboard.</p>
+                <p class="text-xs text-slate-600 mb-4 flex items-center gap-1">
+                    <iconify-icon icon="lucide:shield-check" width="14" class="text-emerald-600"></iconify-icon>
+                    <span>100% free forever • No spam • No credit card required</span>
+                </p>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <a href="{{ route('register') }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all">
+                    <a href="{{ route('register') }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all min-h-[48px]">
                         <iconify-icon icon="lucide:user-plus" width="16"></iconify-icon>
                         Create free account
                     </a>
-                    <a href="{{ route('login') }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-emerald-200 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition">
+                    <a href="{{ route('login') }}" class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border-2 border-emerald-200 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition min-h-[48px]">
                         <iconify-icon icon="lucide:log-in" width="16"></iconify-icon>
                         Login
                     </a>
@@ -369,12 +427,13 @@
         <!-- CTA Section -->
         @guest
         <div class="max-w-4xl mx-auto text-center mb-12">
-            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-12 border-2 {{ $ctaBorder }} shadow-2xl">
-                <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Save this {{ $provider['name'] }} meter for next month</h2>
-                <p class="text-lg text-slate-300 mb-8 max-w-xl mx-auto">
-                    Create a free account to save your reference number and check bills every month with one click
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 md:p-12 border-2 {{ $ctaBorder }} shadow-2xl">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">Save this {{ $provider['name'] }} meter for next month</h2>
+                <p class="text-base sm:text-lg text-slate-300 mb-6 max-w-xl mx-auto">
+                    Create a free account to save your reference number and check bills every month with one click. Never miss a due date again.
                 </p>
-                <a href="{{ route('register') }}" class="inline-flex items-center gap-3 rounded-full {{ $ctaButton }} px-8 py-4 text-base font-bold text-white transition shadow-xl hover:scale-105">
+                <p class="text-xs text-slate-400 mb-6">100% free forever • No spam • No credit card required</p>
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-3 rounded-full {{ $ctaButton }} px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-bold text-white transition shadow-xl hover:scale-105 min-h-[48px]">
                     <iconify-icon icon="lucide:user-plus" width="20"></iconify-icon>
                     Create Your Free Account
                 </a>
