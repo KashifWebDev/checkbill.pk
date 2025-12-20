@@ -38,78 +38,78 @@
 
 @push('schema')
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How can I check my IESCO bill online?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "To check your IESCO bill online, select IESCO as the provider on CheckBill.pk, enter your 14 digit reference number from the top right of your bill and click Check duplicate bill."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Where can I find my IESCO reference number?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Your IESCO reference number is printed in the top section of your physical bill, usually labelled as Reference No or Consumer No. It is a 14 digit number often grouped with dashes."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I pay my IESCO bill online?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. You can pay your IESCO bill through internet banking, mobile wallets like Easypaisa and JazzCash or through your bank's mobile app by entering the reference number."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What happens if I pay my IESCO bill after the due date?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "If you pay your IESCO bill after the due date, a late payment surcharge is added and the amount payable increases. CheckBill.pk helps you see due dates early so you can avoid this fee."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is CheckBill.pk an official IESCO website?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "CheckBill.pk is not an official IESCO website. It is a companion tool that helps you manage IESCO and other Pakistani utility bills from one dashboard using official data sources."
-      }
-    }
-  ]
-}
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => [
+        [
+            '@type' => 'Question',
+            'name' => 'How can I check my IESCO bill online?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'To check your IESCO bill online, select IESCO as the provider on CheckBill.pk, enter your 14 digit reference number from the top right of your bill and click Check duplicate bill.',
+            ],
+        ],
+        [
+            '@type' => 'Question',
+            'name' => 'Where can I find my IESCO reference number?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'Your IESCO reference number is printed in the top section of your physical bill, usually labelled as Reference No or Consumer No. It is a 14 digit number often grouped with dashes.',
+            ],
+        ],
+        [
+            '@type' => 'Question',
+            'name' => 'Can I pay my IESCO bill online?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'Yes. You can pay your IESCO bill through internet banking, mobile wallets like Easypaisa and JazzCash or through your bank\'s mobile app by entering the reference number.',
+            ],
+        ],
+        [
+            '@type' => 'Question',
+            'name' => 'What happens if I pay my IESCO bill after the due date?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'If you pay your IESCO bill after the due date, a late payment surcharge is added and the amount payable increases. CheckBill.pk helps you see due dates early so you can avoid this fee.',
+            ],
+        ],
+        [
+            '@type' => 'Question',
+            'name' => 'Is CheckBill.pk an official IESCO website?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'CheckBill.pk is not an official IESCO website. It is a companion tool that helps you manage IESCO and other Pakistani utility bills from one dashboard using official data sources.',
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ $baseUrl }}/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "{{ $provider['hub_name'] }}",
-      "item": "{{ $baseUrl }}{{ $provider['hub_url'] }}"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "{{ $provider['name'] }} Bill Online",
-      "item": "{{ $canonicalUrl }}"
-    }
-  ]
-}
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Home',
+            'item' => $baseUrl . '/',
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => $provider['hub_name'],
+            'item' => $baseUrl . $provider['hub_url'],
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 3,
+            'name' => $provider['name'] . ' Bill Online',
+            'item' => $canonicalUrl,
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endpush
 
@@ -348,6 +348,35 @@
                 </p>
             </section>
         </div>
+
+        @if(count($relatedProviders) > 0)
+        <!-- Related Providers Section -->
+        <div class="max-w-6xl mx-auto mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Other {{ $provider['utility_type_label'] }} Providers</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Check bills from other {{ strtolower($provider['utility_type_label']) }} companies across Pakistan</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @foreach($relatedProviders as $related)
+                <a href="/{{ $related['slug'] }}" class="group bg-white rounded-2xl p-5 border-2 border-slate-100 hover:border-orange-300 hover:shadow-xl transition-all duration-200">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-16 h-16 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center p-3 shadow-sm mb-3 group-hover:scale-110 transition-transform">
+                            <img src="{{ asset($related['image_path']) }}" 
+                                 alt="{{ $related['name'] }} {{ strtolower($related['utility_type_label']) }} bill online" 
+                                 width="64" 
+                                 height="64"
+                                 class="w-full h-full object-contain" 
+                                 loading="lazy">
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 mb-1">{{ $related['name'] }}</h3>
+                        <p class="text-xs text-slate-500 mb-2 line-clamp-2">{{ $related['full_name'] }}</p>
+                        <p class="text-[10px] font-semibold text-orange-600">{{ implode(', ', array_slice($related['coverage_area'], 0, 2)) }}</p>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
 
         <!-- Internal Links Section -->
         <div class="max-w-4xl mx-auto mb-16">

@@ -132,6 +132,20 @@
         .counter {
             display: inline-block;
         }
+
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+        }
+        #mobile-menu.hidden {
+            opacity: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+        }
+        #mobile-menu:not(.hidden) {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 
     @yield('styles')
@@ -163,27 +177,28 @@
     <!-- Navbar -->
     <header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <a href="{{ route('home') }}">
+            <a href="{{ route('home') }}" class="flex-shrink-0">
                 <img src="{{ asset('storage/img/logo.png') }}" 
                      alt="CheckBill.pk logo" 
-                     style="height: 50px">
+                     class="h-10 sm:h-12 md:h-[50px] w-auto max-w-[160px] sm:max-w-[200px]">
             </a>
 
-            <div class="hidden md:flex items-center gap-6">
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-6">
                 <a href="{{ route('hubs.electricity') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Electricity</a>
                 <a href="{{ route('hubs.gas') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Gas</a>
                 <a href="{{ route('hubs.internet') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Internet</a>
-            </div>
+            </nav>
 
-            <div class="flex items-center gap-3">
+            <!-- Desktop Auth Buttons -->
+            <div class="hidden md:flex items-center gap-3">
                 @guest
-                    <a href="{{ route('login') }}" class="hidden md:inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
+                    <a href="{{ route('login') }}" class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
                         Sign in
                     </a>
                     <a href="{{ route('register') }}" class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-2 text-xs font-semibold text-white shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200">
                         <iconify-icon icon="lucide:user-plus" width="14"></iconify-icon>
-                        <span class="hidden sm:inline">Create account</span>
-                        <span class="sm:hidden">Sign up</span>
+                        Create account
                     </a>
                 @endguest
                 @auth
@@ -193,20 +208,54 @@
                     </a>
                 @endauth
             </div>
+
+            <!-- Mobile Menu Button -->
+            <button type="button" id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" aria-label="Toggle menu">
+                <iconify-icon icon="lucide:menu" width="24" id="menu-icon"></iconify-icon>
+                <iconify-icon icon="lucide:x" width="24" id="close-icon" class="hidden"></iconify-icon>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-16 bg-white border-b border-slate-200 shadow-lg max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <nav class="px-4 py-4 space-y-1">
+                <a href="{{ route('hubs.electricity') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Electricity</a>
+                <a href="{{ route('hubs.gas') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Gas</a>
+                <a href="{{ route('hubs.internet') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Internet</a>
+                
+                <div class="border-t border-slate-200 my-2"></div>
+                
+                @guest
+                    <a href="{{ route('login') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">
+                        <iconify-icon icon="lucide:log-in" width="20" class="mr-3 flex-shrink-0"></iconify-icon>
+                        <span>Sign in</span>
+                    </a>
+                    <a href="{{ route('register') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-semibold text-white bg-gradient-to-r from-slate-900 to-slate-800 shadow-lg">
+                        <iconify-icon icon="lucide:user-plus" width="20" class="mr-3 flex-shrink-0"></iconify-icon>
+                        <span>Create account</span>
+                    </a>
+                @endguest
+                @auth
+                    <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-semibold text-white bg-gradient-to-r from-slate-900 to-slate-800 shadow-lg">
+                        <iconify-icon icon="lucide:layout-dashboard" width="20" class="mr-3 flex-shrink-0"></iconify-icon>
+                        <span>Dashboard</span>
+                    </a>
+                @endauth
+            </nav>
         </div>
     </header>
 
-    <main class="flex-grow @yield('main_class', 'pt-24 pb-16 px-4 sm:px-6 relative overflow-hidden')">
+    <main class="flex-grow @yield('main_class', 'pt-20 md:pt-24 pb-12 md:pb-16 px-4 sm:px-6 relative overflow-hidden')">
         @yield('content')
     </main>
 
     <!-- Footer -->
     <footer class="bg-white border-t-2 border-slate-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-            <div class="grid md:grid-cols-3 gap-8 mb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 mb-6 md:mb-8">
                 <div>
                     <div class="flex items-center gap-2.5 mb-4">
-                        <div class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden">
+                        <div class="h-10 overflow-hidden">
                             <img src="{{ asset('storage/img/logo.png') }}" 
                                  alt="CheckBill.pk logo" 
                                  class="w-full h-full object-contain"
@@ -214,9 +263,6 @@
                             <div class="hidden w-full h-full bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl items-center justify-center text-white">
                                 <iconify-icon icon="lucide:zap" width="20" class="text-green-400"></iconify-icon>
                             </div>
-                        </div>
-                        <div>
-                            <span class="text-base font-bold text-slate-900">CheckBill.pk</span>
                         </div>
                     </div>
                     <p class="text-sm text-slate-600">The fastest way to check and manage your utility bills in Pakistan.</p>
@@ -244,5 +290,52 @@
     </footer>
 
     @yield('scripts')
+    
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.contains('hidden');
+                
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden');
+                    menuIcon.classList.add('hidden');
+                    closeIcon.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Close menu when clicking on a link
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

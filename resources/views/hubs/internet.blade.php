@@ -4,30 +4,8 @@
 @section('meta_description', 'Check internet bills online for PTCL, Nayatel and StormFiber in Pakistan. Learn how to manage all internet invoices in one calm dashboard with CheckBill.pk.')
 @section('canonical', config('app.url') . '/internet-bill-online')
 
-@push('schema')
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ config('app.url') }}/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Internet Bill Online",
-      "item": "{{ config('app.url') }}/internet-bill-online"
-    }
-  ]
-}
-</script>
-@endpush
-
 @php
+    $baseUrl = config('app.url');
     $allProviders = config('providers.providers');
     $internetProviders = collect($allProviders)
         ->filter(fn($p) => $p['type'] === 'internet')
@@ -44,6 +22,29 @@
         ->values()
         ->toArray();
 @endphp
+
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Home',
+            'item' => $baseUrl . '/',
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => 'Internet Bill Online',
+            'item' => $baseUrl . '/internet-bill-online',
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
 
 @section('content')
     <div class="max-w-6xl mx-auto">
@@ -66,8 +67,8 @@
         </div>
 
         <!-- Quick Check Card -->
-        <div class="max-w-2xl mx-auto mb-16 animate-fade-in-up animate-delay-100">
-            <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-6">
+        <div class="max-w-2xl mx-auto mb-12 md:mb-16 animate-fade-in-up animate-delay-100">
+            <div class="bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6">
                 <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <iconify-icon icon="lucide:wifi" width="20" class="text-blue-500"></iconify-icon>
                     Check Your Internet Bill
@@ -77,7 +78,7 @@
                     
                     <div>
                         <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Select Provider</label>
-                        <select name="provider" required class="w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl px-4 py-4 text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all">
+                        <select name="provider" required class="w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl px-4 py-4 text-base sm:text-sm font-semibold text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all min-h-[48px]">
                             <option value="">Choose your internet provider...</option>
                             @foreach ($internetProviders as $provider)
                                 <option value="{{ $provider['key'] }}">{{ $provider['label'] }} - {{ $provider['tagline'] }}</option>
@@ -97,7 +98,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <iconify-icon icon="lucide:hash" width="18" class="text-slate-400 group-focus-within:text-blue-500 transition-colors"></iconify-icon>
                             </div>
-                            <input type="tel" name="reference_number" placeholder="Enter your internet account ID" required class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all">
+                            <input type="tel" name="reference_number" placeholder="Enter your internet account ID" required class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-base sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all min-h-[48px]">
                         </div>
                     </div>
 
@@ -119,7 +120,7 @@
                         </div>
                     @endauth
 
-                    <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group">
+                    <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group min-h-[48px]">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             Check My Internet Bill
                             <iconify-icon icon="lucide:arrow-right" width="18" class="group-hover:translate-x-1 transition-transform"></iconify-icon>

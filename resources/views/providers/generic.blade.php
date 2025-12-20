@@ -46,30 +46,30 @@
 
 @push('schema')
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ $baseUrl }}/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "{{ $provider['hub_name'] }}",
-      "item": "{{ $baseUrl }}{{ $provider['hub_url'] }}"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "{{ $provider['name'] }} Bill Online",
-      "item": "{{ $canonicalUrl }}"
-    }
-  ]
-}
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Home',
+            'item' => $baseUrl . '/',
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => $provider['hub_name'],
+            'item' => $baseUrl . $provider['hub_url'],
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 3,
+            'name' => $provider['name'] . ' Bill Online',
+            'item' => $canonicalUrl,
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
 </script>
 @endpush
 
@@ -101,8 +101,8 @@
         </div>
 
         <!-- Quick Check Card -->
-        <div class="max-w-2xl mx-auto mb-16 animate-fade-in-up animate-delay-100">
-            <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-6">
+        <div class="max-w-2xl mx-auto mb-12 md:mb-16 animate-fade-in-up animate-delay-100">
+            <div class="bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6">
                 <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
                     <iconify-icon icon="lucide:search" width="20" class="{{ $iconColor }}"></iconify-icon>
                     Check Your {{ $provider['name'] }} Bill
@@ -124,7 +124,7 @@
                                 <iconify-icon icon="lucide:hash" width="18" class="text-slate-400 {{ $isElectricity ? 'group-focus-within:text-orange-500' : ($isGas ? 'group-focus-within:text-red-500' : 'group-focus-within:text-blue-500') }} transition-colors"></iconify-icon>
                             </div>
                             <input type="text" name="reference_number" placeholder="Enter the number printed on your bill" required
-                                   class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 {{ $focusRing }} transition-all">
+                                   class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-base sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 {{ $focusRing }} transition-all min-h-[48px]">
                         </div>
                         <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
                             <iconify-icon icon="lucide:info" width="12"></iconify-icon>
@@ -150,7 +150,7 @@
                         </div>
                     @endauth
 
-                    <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r {{ $buttonGradient }} py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group">
+                    <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r {{ $buttonGradient }} py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group min-h-[48px]">
                         <span class="relative z-10 flex items-center justify-center gap-2">
                             Check My {{ $provider['name'] }} Bill
                             <iconify-icon icon="lucide:arrow-right" width="18" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
@@ -314,6 +314,39 @@
                 </p>
             </section>
         </div>
+
+        @if(count($relatedProviders) > 0)
+        <!-- Related Providers Section -->
+        <div class="max-w-6xl mx-auto mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Other {{ $provider['utility_type_label'] }} Providers</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Check bills from other {{ strtolower($provider['utility_type_label']) }} companies across Pakistan</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                @foreach($relatedProviders as $related)
+                @php
+                    $hoverBorderClass = $isElectricity ? 'hover:border-orange-300' : ($isGas ? 'hover:border-red-300' : 'hover:border-blue-300');
+                    $textColorClass = $isElectricity ? 'text-orange-600' : ($isGas ? 'text-red-600' : 'text-blue-600');
+                @endphp
+                <a href="/{{ $related['slug'] }}" class="group bg-white rounded-2xl p-5 border-2 border-slate-100 {{ $hoverBorderClass }} hover:shadow-xl transition-all duration-200">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-16 h-16 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center p-3 shadow-sm mb-3 group-hover:scale-110 transition-transform">
+                            <img src="{{ asset($related['image_path']) }}" 
+                                 alt="{{ $related['name'] }} {{ strtolower($related['utility_type_label']) }} bill online" 
+                                 width="64" 
+                                 height="64"
+                                 class="w-full h-full object-contain" 
+                                 loading="lazy">
+                        </div>
+                        <h3 class="text-base font-bold text-slate-900 mb-1">{{ $related['name'] }}</h3>
+                        <p class="text-xs text-slate-500 mb-2 line-clamp-2">{{ $related['full_name'] }}</p>
+                        <p class="text-[10px] font-semibold {{ $textColorClass }}">{{ implode(', ', array_slice($related['coverage_area'], 0, 2)) }}</p>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
 
         <!-- Internal Links Section -->
         <div class="max-w-4xl mx-auto mb-16">

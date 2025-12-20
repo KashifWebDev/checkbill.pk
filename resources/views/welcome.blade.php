@@ -106,8 +106,8 @@
             </div>
 
             <!-- Main Bill Checker Card -->
-            <div id="app" class="max-w-2xl mx-auto mb-16 animate-fade-in-up animate-delay-100">
-                <div class="relative bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 z-10">
+            <div id="app" class="max-w-2xl mx-auto mb-12 md:mb-16 animate-fade-in-up animate-delay-100">
+                <div class="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6 z-10">
                     <!-- Tab Switcher -->
                     <div class="flex p-1.5 bg-slate-50 rounded-2xl mb-6 border border-slate-100">
                         <button type="button" data-bill-tab="electricity" id="tab-electricity" class="flex-1 py-3 text-sm tab-btn-active transition-all flex items-center justify-center gap-2">
@@ -200,7 +200,7 @@
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <iconify-icon icon="lucide:hash" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
                                 </div>
-                                <input type="tel" name="reference_number" placeholder="Enter your 14-digit reference number" class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all">
+                                <input type="tel" name="reference_number" placeholder="Enter your 14-digit reference number" class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 sm:py-4 pl-12 pr-4 text-base sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all min-h-[48px]">
                             </div>
                         </div>
 
@@ -226,7 +226,7 @@
                         </div>
 
                         <!-- Submit Button -->
-                        <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group">
+                        <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 py-4 sm:py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group min-h-[48px]">
                             <span class="relative z-10 flex items-center justify-center gap-2">
                                 Check My Bill Now
                                 <iconify-icon icon="lucide:arrow-right" width="18" class="group-hover:translate-x-1 transition-transform"></iconify-icon>

@@ -96,9 +96,9 @@
         </div>
 
         <!-- Bill Info Card -->
-        <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 mb-8 animate-fade-in-up animate-delay-100">
-            <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
-                <div class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-slate-200 flex items-center justify-center p-3 shadow-sm">
+        <div class="bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6 md:p-8 mb-6 md:mb-8 animate-fade-in-up animate-delay-100">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6 pb-6 border-b border-slate-100">
+                <div class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-slate-200 flex items-center justify-center p-3 shadow-sm flex-shrink-0">
                     <img src="{{ $provider['logo'] }}" 
                          alt="{{ $provider['label'] }} {{ strtolower($type) }} bill online, {{ $provider['name'] }}" 
                          width="64" 
@@ -129,7 +129,7 @@
                     <p class="text-emerald-50 text-sm mb-6">Get instant access to your complete bill details</p>
                 </div>
                 <form action="{{ $externalBillUrl }}" method="POST" target="_blank">
-                    <button type="submit" class="w-full bg-white text-emerald-600 rounded-xl py-5 px-8 text-lg font-bold shadow-xl flex items-center justify-center gap-3">
+                    <button type="submit" class="w-full bg-white text-emerald-600 rounded-xl py-4 sm:py-5 px-6 sm:px-8 text-base sm:text-lg font-bold shadow-xl flex items-center justify-center gap-3 min-h-[48px]">
                         <iconify-icon icon="lucide:external-link" width="24"></iconify-icon>
                         Open My {{ $provider['label'] }} Bill Now
                     </button>
