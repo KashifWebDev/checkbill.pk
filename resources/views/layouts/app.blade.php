@@ -158,7 +158,7 @@
     </script>
     @endif
 </head>
-
+<style>body { background-color: red; }</style>
 <body class="@yield('body_class', 'gradient-bg text-slate-700 antialiased relative min-h-screen flex flex-col')">
     <!-- Navbar -->
     <header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">

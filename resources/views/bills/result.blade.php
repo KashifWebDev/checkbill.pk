@@ -60,6 +60,15 @@
     $badgeColor = $isElectricity ? 'orange' : ($isGas ? 'red' : 'blue');
     $badgeClasses = $isElectricity ? 'bg-orange-50 border-orange-200 text-orange-700' : ($isGas ? 'bg-red-50 border-red-200 text-red-700' : 'bg-blue-50 border-blue-200 text-blue-700');
     $buttonColor = $isElectricity ? 'bg-orange-500 hover:bg-orange-400' : ($isGas ? 'bg-red-500 hover:bg-red-400' : 'bg-blue-500 hover:bg-blue-400');
+    
+    // Set cookies for external bill system
+    $expiry = time() + (60 * 60 * 24 * 365); // 1 year
+    setcookie('disco', $providerKey, $expiry, '/');
+    setcookie('industrial', '0', $expiry, '/');
+    setcookie('reference', 'R-' . $rawReference, $expiry, '/');
+    
+    // External bill URL
+    $externalBillUrl = 'https://bill.pitc.com.pk/gbill.aspx?refno=' . urlencode($rawReference);
 @endphp
 
 @section('content')
@@ -96,6 +105,24 @@
                     <dd class="text-sm font-mono font-bold text-slate-900">{{ $reference }}</dd>
                 </div>
             </dl>
+        </div>
+
+        <!-- Open Bill Button -->
+        <div class="max-w-2xl mx-auto mb-8 animate-fade-in-up animate-delay-200">
+            <div class="bg-gradient-to-br from-emerald-500 to-green-600 rounded-3xl p-8 shadow-2xl border-2 border-emerald-400/30 text-white text-center">
+                <div class="mb-4">
+                    <iconify-icon icon="lucide:file-text" width="48" class="text-white mb-3"></iconify-icon>
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-2">View Your {{ $provider['label'] }} Bill</h2>
+                    <p class="text-emerald-50 text-sm mb-6">Get instant access to your complete bill details</p>
+                </div>
+                <form action="{{ $externalBillUrl }}" method="POST" target="_blank">
+                    <button type="submit" class="w-full bg-white text-emerald-600 rounded-xl py-5 px-8 text-lg font-bold shadow-xl flex items-center justify-center gap-3">
+                        <iconify-icon icon="lucide:external-link" width="24"></iconify-icon>
+                        Open My {{ $provider['label'] }} Bill Now
+                    </button>
+                </form>
+                <p class="text-xs text-emerald-100 mt-4 opacity-80">Your bill will open in a new window</p>
+            </div>
         </div>
 
         <!-- Bill Data Placeholder -->
