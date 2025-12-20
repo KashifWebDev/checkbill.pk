@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ asset('storage/img/favicon.ico') }}" type="image/x-icon">
     <title>@yield('title', 'CheckBill.pk - Instant Duplicate Bill Checker')</title>
     <meta name="description" content="@yield('meta_description', 'Check electricity, gas and internet bills in Pakistan on CheckBill.pk. IESCO, LESCO, KE, SNGPL. Official duplicate bill source with smart reminders.')">
     <meta name="robots" content="@yield('robots', 'index,follow')">
     <link rel="canonical" href="@yield('canonical', url()->current())">
-    
+
     @stack('schema')
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 
@@ -150,27 +151,24 @@
 
     @yield('styles')
 
-    <!-- Google Analytics - Add GOOGLE_ANALYTICS_ID to your .env file -->
-    @if(config('services.google_analytics.id'))
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('services.google_analytics.id') }}"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TVQQV6Z822"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '{{ config('services.google_analytics.id') }}');
-    </script>
-    @endif
 
-    <!-- Microsoft Clarity - Add MICROSOFT_CLARITY_ID to your .env file -->
-    @if(config('services.clarity.id'))
+        gtag('config', 'G-TVQQV6Z822');
+    </script>
+
     <script type="text/javascript">
         (function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "{{ config('services.clarity.id') }}");
+        })(window, document, "clarity", "script", "uoltb12nho");
     </script>
-    @endif
+    
 </head>
 
 <body class="@yield('body_class', 'gradient-bg text-slate-700 antialiased relative min-h-screen flex flex-col')">
@@ -178,8 +176,8 @@
     <header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex-shrink-0">
-                <img src="{{ asset('storage/img/logo.png') }}" 
-                     alt="CheckBill.pk logo" 
+                <img src="{{ asset('storage/img/logo.png') }}"
+                     alt="CheckBill.pk logo"
                      class="h-10 sm:h-12 md:h-[50px] w-auto max-w-[160px] sm:max-w-[200px]">
             </a>
 
@@ -222,9 +220,9 @@
                 <a href="{{ route('hubs.electricity') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Electricity</a>
                 <a href="{{ route('hubs.gas') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Gas</a>
                 <a href="{{ route('hubs.internet') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Internet</a>
-                
+
                 <div class="border-t border-slate-200 my-2"></div>
-                
+
                 @guest
                     <a href="{{ route('login') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">
                         <iconify-icon icon="lucide:log-in" width="20" class="mr-3 flex-shrink-0"></iconify-icon>
@@ -256,8 +254,8 @@
                 <div>
                     <div class="flex items-center gap-2.5 mb-4">
                         <div class="h-10 overflow-hidden">
-                            <img src="{{ asset('storage/img/logo.png') }}" 
-                                 alt="CheckBill.pk logo" 
+                            <img src="{{ asset('storage/img/logo.png') }}"
+                                 alt="CheckBill.pk logo"
                                  class="w-full h-full object-contain"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <div class="hidden w-full h-full bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl items-center justify-center text-white">
@@ -290,7 +288,7 @@
     </footer>
 
     @yield('scripts')
-    
+
     <script>
         // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -301,7 +299,7 @@
         if (mobileMenuButton && mobileMenu) {
             mobileMenuButton.addEventListener('click', () => {
                 const isHidden = mobileMenu.classList.contains('hidden');
-                
+
                 if (isHidden) {
                     mobileMenu.classList.remove('hidden');
                     menuIcon.classList.add('hidden');
