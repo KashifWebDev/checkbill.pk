@@ -52,21 +52,58 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware('auth')
     ->name('dashboard');
 
-// Basic robots.txt and sitemap placeholders
+// Robots.txt
 Route::get('/robots.txt', function () {
-    return response("User-agent: *\nAllow: /\nSitemap: " . url('/sitemap.xml'), 200)
-        ->header('Content-Type', 'text/plain');
+    $baseUrl = config('app.url');
+    $content = "User-agent: *\n";
+    $content .= "Disallow: /check-duplicate-bill\n";
+    $content .= "Disallow: /register\n";
+    $content .= "Disallow: /login\n";
+    $content .= "Disallow: /dashboard\n";
+    $content .= "Allow: /\n";
+    $content .= "Sitemap: {$baseUrl}/sitemap.xml\n";
+    
+    return response($content, 200)->header('Content-Type', 'text/plain');
 });
 
+// Sitemap
 Route::get('/sitemap.xml', function () {
+    $baseUrl = config('app.url');
+    $allProviders = config('providers.providers');
+    
     $urls = [
-        route('home'),
-        route('hubs.electricity'),
-        route('hubs.gas'),
-        route('hubs.internet'),
-        route('providers.iesco'),
-        route('providers.sngpl'),
+        ['loc' => $baseUrl . '/', 'priority' => '1.0'],
+        ['loc' => $baseUrl . '/electricity-bill-online', 'priority' => '0.9'],
+        ['loc' => $baseUrl . '/gas-bill-online', 'priority' => '0.9'],
+        ['loc' => $baseUrl . '/internet-bill-online', 'priority' => '0.9'],
     ];
+    
+    // Add all provider pages
+    foreach ($allProviders as $provider) {
+        $urls[] = [
+            'loc' => $baseUrl . '/' . $provider['slug'],
+            'priority' => '0.8',
+            'changefreq' => 'monthly'
+        ];
+    }
+    
+    // Add guide pages (if they exist)
+    $guidePages = [
+        '/find-reference-number',
+        '/how-to-download-duplicate-bill',
+        '/how-to-pay-electricity-bill-online-pakistan',
+        '/how-to-pay-gas-bill-online-pakistan',
+        '/electricity-bill-calculator-pakistan',
+        '/gas-bill-calculator-pakistan',
+    ];
+    
+    foreach ($guidePages as $guide) {
+        $urls[] = [
+            'loc' => $baseUrl . $guide,
+            'priority' => '0.7',
+            'changefreq' => 'monthly'
+        ];
+    }
 
     $xml = view('sitemap', ['urls' => $urls]);
 

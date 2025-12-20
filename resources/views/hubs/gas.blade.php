@@ -1,24 +1,48 @@
 @extends('layouts.app')
 
-@section('title', 'Gas Bill Online in Pakistan — SNGPL & SSGC Duplicate Bills')
+@section('title', 'Gas Bill Online 2025 in Pakistan — SNGPL & SSGC Duplicate Bills')
 @section('meta_description', 'Check gas bills online for SNGPL and SSGC in Pakistan. Learn how to find your consumer number, download duplicate gas bills and save meters with CheckBill.pk.')
-@section('canonical', url('/gas-bill-online'))
+@section('canonical', config('app.url') . '/gas-bill-online')
+
+@push('schema')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ config('app.url') }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Gas Bill Online",
+      "item": "{{ config('app.url') }}/gas-bill-online"
+    }
+  ]
+}
+</script>
+@endpush
 
 @php
-    $providerLogos = [
-        'sngpl' => asset('storage/img/sngpl.png'),
-        'ssgc' => asset('storage/img/ssgc.png'),
-    ];
-
-    $gasProviders = [
-        ['key' => 'sngpl', 'label' => 'SNGPL', 'name' => 'Sui Northern Gas Pipelines Ltd.', 'route' => route('providers.sngpl'), 'tagline' => 'Punjab & KPK'],
-        ['key' => 'ssgc', 'label' => 'SSGC', 'name' => 'Sui Southern Gas Company', 'route' => route('providers.ssgc'), 'tagline' => 'Sindh & Balochistan'],
-    ];
-
-    $gasProviders = array_map(function ($provider) use ($providerLogos) {
-        $provider['logo'] = $providerLogos[$provider['key']] ?? asset('storage/img/' . $provider['key'] . '.png');
-        return $provider;
-    }, $gasProviders);
+    $allProviders = config('providers.providers');
+    $gasProviders = collect($allProviders)
+        ->filter(fn($p) => $p['type'] === 'gas')
+        ->map(function ($provider) {
+            return [
+                'key' => $provider['key'],
+                'label' => $provider['name'],
+                'name' => $provider['full_name'],
+                'route' => route('providers.' . $provider['key']),
+                'tagline' => implode(', ', array_slice($provider['coverage_area'], 0, 2)),
+                'logo' => asset($provider['image_path']),
+            ];
+        })
+        ->values()
+        ->toArray();
 @endphp
 
 @section('content')

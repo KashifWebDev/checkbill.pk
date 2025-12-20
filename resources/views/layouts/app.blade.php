@@ -8,7 +8,7 @@
     <meta name="robots" content="@yield('robots', 'index,follow')">
     <link rel="canonical" href="@yield('canonical', url()->current())">
     
-    @yield('jsonld')
+    @stack('schema')
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
@@ -158,19 +158,15 @@
     </script>
     @endif
 </head>
-<style>body { background-color: red; }</style>
+
 <body class="@yield('body_class', 'gradient-bg text-slate-700 antialiased relative min-h-screen flex flex-col')">
     <!-- Navbar -->
     <header class="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <a href="{{ route('home') }}" class="flex items-center gap-2.5 group">
-                <div class="relative w-10 h-10 bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 transition-transform duration-300">
-                    <iconify-icon icon="lucide:zap" width="20" class="text-green-400"></iconify-icon>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-base font-bold tracking-tight text-slate-900 leading-none">CheckBill.pk</span>
-                    <span class="text-[10px] font-medium text-slate-500 uppercase tracking-wider">Bill Checker</span>
-                </div>
+            <a href="{{ route('home') }}">
+                <img src="{{ asset('storage/img/logo.png') }}" 
+                     alt="CheckBill.pk logo" 
+                     style="height: 50px">
             </a>
 
             <div class="hidden md:flex items-center gap-6">
@@ -210,8 +206,14 @@
             <div class="grid md:grid-cols-3 gap-8 mb-8">
                 <div>
                     <div class="flex items-center gap-2.5 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl flex items-center justify-center text-white">
-                            <iconify-icon icon="lucide:zap" width="20" class="text-green-400"></iconify-icon>
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden">
+                            <img src="{{ asset('storage/img/logo.png') }}" 
+                                 alt="CheckBill.pk logo" 
+                                 class="w-full h-full object-contain"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="hidden w-full h-full bg-gradient-to-br from-slate-900 to-slate-700 rounded-xl items-center justify-center text-white">
+                                <iconify-icon icon="lucide:zap" width="20" class="text-green-400"></iconify-icon>
+                            </div>
                         </div>
                         <div>
                             <span class="text-base font-bold text-slate-900">CheckBill.pk</span>

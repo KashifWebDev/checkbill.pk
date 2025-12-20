@@ -2,8 +2,16 @@
 
 @section('title', $provider['name'].' duplicate bill result — CheckBill.pk')
 @section('meta_description', 'Preview for '.$provider['name'].' duplicate bill lookup on CheckBill.pk. This page is not indexed by search engines.')
-@section('canonical', isset($provider['slug']) && $provider['slug'] ? url('/'.$provider['slug']) : url()->previous())
 @section('robots', 'noindex,nofollow')
+
+@php
+    // Get provider slug from config for canonical
+    $allProviders = config('providers.providers');
+    $providerConfig = $allProviders[$providerKey] ?? null;
+    $canonicalUrl = $providerConfig ? config('app.url') . '/' . $providerConfig['slug'] : url()->previous();
+@endphp
+
+@section('canonical', $canonicalUrl)
 
 @php
     // Provider logos mapping
@@ -91,7 +99,12 @@
         <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 mb-8 animate-fade-in-up animate-delay-100">
             <div class="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100">
                 <div class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-slate-200 flex items-center justify-center p-3 shadow-sm">
-                    <img src="{{ $provider['logo'] }}" alt="{{ $provider['name'] }}" class="w-full h-full object-contain" loading="lazy">
+                    <img src="{{ $provider['logo'] }}" 
+                         alt="{{ $provider['label'] }} {{ strtolower($type) }} bill online, {{ $provider['name'] }}" 
+                         width="64" 
+                         height="64"
+                         class="w-full h-full object-contain" 
+                         loading="eager">
                 </div>
                 <div>
                     <h2 class="text-2xl font-bold text-slate-900">{{ $provider['name'] }}</h2>
@@ -124,6 +137,29 @@
                 <p class="text-xs text-emerald-100 mt-4 opacity-80">Your bill will open in a new window</p>
             </div>
         </div>
+
+        <!-- Bill Status Info -->
+        @if($savedBill && $savedBill->last_checked_at)
+        <div class="max-w-2xl mx-auto mb-8">
+            <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <p class="text-xs font-semibold text-blue-700 mb-1">Last checked</p>
+                        <p class="text-sm font-bold text-slate-900">{{ $savedBill->last_checked_at->diffForHumans() }}</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-500 text-white flex items-center justify-center shadow-lg">
+                        <iconify-icon icon="lucide:clock" width="24"></iconify-icon>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-blue-200">
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <iconify-icon icon="lucide:lightbulb" width="14" class="inline text-amber-500"></iconify-icon>
+                        Bills are often generated around the start of the month. Check back then for your next bill.
+                    </p>
+                </div>
+            </div>
+        </div>
+        @endif
 
         <!-- Bill Data Placeholder -->
         <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 mb-8 text-white border-2 border-emerald-400/30 shadow-2xl">

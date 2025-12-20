@@ -1,26 +1,48 @@
 @extends('layouts.app')
 
-@section('title', 'Internet Bill Online — PTCL, Nayatel & StormFiber')
+@section('title', 'Internet Bill Online 2025 — PTCL, Nayatel & StormFiber')
 @section('meta_description', 'Check internet bills online for PTCL, Nayatel and StormFiber in Pakistan. Learn how to manage all internet invoices in one calm dashboard with CheckBill.pk.')
-@section('canonical', url('/internet-bill-online'))
+@section('canonical', config('app.url') . '/internet-bill-online')
+
+@push('schema')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ config('app.url') }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Internet Bill Online",
+      "item": "{{ config('app.url') }}/internet-bill-online"
+    }
+  ]
+}
+</script>
+@endpush
 
 @php
-    $providerLogos = [
-        'ptcl' => asset('storage/img/ptcl.jpg'),
-        'nayatel' => asset('storage/img/nayatel.jpg'),
-        'stormfiber' => asset('storage/img/stormfiber.png'),
-    ];
-
-    $internetProviders = [
-        ['key' => 'ptcl', 'label' => 'PTCL', 'name' => 'Pakistan Telecommunication Company Limited', 'route' => route('providers.ptcl'), 'tagline' => 'Nationwide internet'],
-        ['key' => 'nayatel', 'label' => 'Nayatel', 'name' => 'Nayatel Fiber Internet', 'route' => route('providers.nayatel'), 'tagline' => 'Fiber cities'],
-        ['key' => 'stormfiber', 'label' => 'StormFiber', 'name' => 'StormFiber Broadband', 'route' => route('providers.stormfiber'), 'tagline' => 'Fiber broadband'],
-    ];
-
-    $internetProviders = array_map(function ($provider) use ($providerLogos) {
-        $provider['logo'] = $providerLogos[$provider['key']] ?? asset('storage/img/' . $provider['key'] . '.png');
-        return $provider;
-    }, $internetProviders);
+    $allProviders = config('providers.providers');
+    $internetProviders = collect($allProviders)
+        ->filter(fn($p) => $p['type'] === 'internet')
+        ->map(function ($provider) {
+            return [
+                'key' => $provider['key'],
+                'label' => $provider['name'],
+                'name' => $provider['full_name'],
+                'route' => route('providers.' . $provider['key']),
+                'tagline' => implode(', ', array_slice($provider['coverage_area'], 0, 2)),
+                'logo' => asset($provider['image_path']),
+            ];
+        })
+        ->values()
+        ->toArray();
 @endphp
 
 @section('content')

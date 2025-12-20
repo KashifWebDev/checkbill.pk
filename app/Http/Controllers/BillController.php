@@ -8,14 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class BillController extends Controller
 {
-    protected array $providers = [
-        'iesco' => ['type' => 'electricity', 'name' => 'IESCO', 'slug' => 'iesco-bill-online'],
-        'lesco' => ['type' => 'electricity', 'name' => 'LESCO', 'slug' => 'lesco-bill-online'],
-        'ke' => ['type' => 'electricity', 'name' => 'K-Electric', 'slug' => 'k-electric-bill-online'],
-        'sngpl' => ['type' => 'gas', 'name' => 'SNGPL', 'slug' => 'sngpl-bill-online'],
-        // other providers can be added here gradually
-    ];
-
     public function check(Request $request)
     {
         $data = $request->validate([
@@ -25,7 +17,14 @@ class BillController extends Controller
         ]);
 
         $providerKey = strtolower($data['provider']);
-        $provider = $this->providers[$providerKey] ?? [
+        $allProviders = config('providers.providers');
+        $providerConfig = $allProviders[$providerKey] ?? null;
+        
+        $provider = $providerConfig ? [
+            'type' => $providerConfig['type'],
+            'name' => $providerConfig['name'],
+            'slug' => $providerConfig['slug'],
+        ] : [
             'type' => $data['type'],
             'name' => strtoupper($providerKey),
             'slug' => null,
@@ -34,20 +33,34 @@ class BillController extends Controller
         $maskedReference = $this->maskReference($data['reference_number']);
 
         $savedBill = null;
-        if (Auth::check() && $request->boolean('save')) {
-            $savedBill = SavedBill::updateOrCreate(
-                [
-                    'user_id' => $request->user()->id,
-                    'provider_key' => $providerKey,
-                    'reference_number' => $data['reference_number'],
-                ],
-                [
-                    'type' => $provider['type'],
-                    'provider_name' => $provider['name'],
-                    'nickname' => $request->input('nickname'),
-                    'last_checked_at' => now(),
-                ],
-            );
+        if (Auth::check()) {
+            // Always update last_checked_at if bill exists, even if not saving new one
+            $existingBill = SavedBill::where('user_id', $request->user()->id)
+                ->where('provider_key', $providerKey)
+                ->where('reference_number', $data['reference_number'])
+                ->first();
+            
+            if ($existingBill) {
+                $existingBill->update(['last_checked_at' => now()]);
+                $savedBill = $existingBill;
+            }
+            
+            // Save new bill if requested
+            if ($request->boolean('save')) {
+                $savedBill = SavedBill::updateOrCreate(
+                    [
+                        'user_id' => $request->user()->id,
+                        'provider_key' => $providerKey,
+                        'reference_number' => $data['reference_number'],
+                    ],
+                    [
+                        'type' => $provider['type'],
+                        'provider_name' => $provider['name'],
+                        'nickname' => $request->input('nickname'),
+                        'last_checked_at' => now(),
+                    ],
+                );
+            }
         }
 
         return view('bills.result', [

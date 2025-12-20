@@ -1,52 +1,85 @@
 @extends('layouts.app')
 
-@section('title', 'CheckBill.pk - Instant Duplicate Bill Checker')
-@section('meta_description', 'Check electricity and gas bills in Pakistan on CheckBill.pk. IESCO, LESCO, KE, SNGPL. Official duplicate bill source with smart reminders.')
+@section('title', 'CheckBill.pk 2025 - Instant Duplicate Bill Checker for Pakistan')
+@section('meta_description', 'Check electricity, gas and internet bills online in Pakistan by reference number. IESCO, LESCO, KE, SNGPL, SSGC, PTCL. Download duplicate bills, save meters, get reminders. 100% free.')
+@section('canonical', config('app.url') . '/')
 
 @php
-    $providerLogos = [
-        'iesco' => asset('storage/img/iesco.jpg'),
-        'lesco' => asset('storage/img/lesco.png'),
-        'mepco' => asset('storage/img/mepco.png'),
-        'fesco' => asset('storage/img/fesco.png'),
-        'pesco' => asset('storage/img/pesco.png'),
-        'gepco' => asset('storage/img/gepco.png'),
-        'hesco' => asset('storage/img/hesco.jpg'),
-        'sepco' => asset('storage/img/sepco.png'),
-        'qesco' => asset('storage/img/qesco.png'),
-        'tesco' => asset('storage/img/tesco.png'),
-        'ke' => asset('storage/img/kelectric.jpg'),
-        'sngpl' => asset('storage/img/sngpl.png'),
-        'ssgc' => asset('storage/img/ssgc.png'),
-        'ptcl' => asset('storage/img/ptcl.jpg'),
-        'nayatel' => asset('storage/img/nayatel.jpg'),
-        'stormfiber' => asset('storage/img/stormfiber.png'),
-    ];
-
-    $providers = [
-        ['key' => 'iesco', 'label' => 'IESCO', 'name' => 'Islamabad Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.iesco'), 'tagline' => 'Islamabad region'],
-        ['key' => 'lesco', 'label' => 'LESCO', 'name' => 'Lahore Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.lesco'), 'tagline' => 'Lahore region'],
-        ['key' => 'mepco', 'label' => 'MEPCO', 'name' => 'Multan Electric Power Company', 'type' => 'electricity', 'route' => route('providers.mepco'), 'tagline' => 'Multan region'],
-        ['key' => 'fesco', 'label' => 'FESCO', 'name' => 'Faisalabad Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.fesco'), 'tagline' => 'Faisalabad region'],
-        ['key' => 'pesco', 'label' => 'PESCO', 'name' => 'Peshawar Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.pesco'), 'tagline' => 'Peshawar region'],
-        ['key' => 'gepco', 'label' => 'GEPCO', 'name' => 'Gujranwala Electric Power Company', 'type' => 'electricity', 'route' => route('providers.gepco'), 'tagline' => 'Gujranwala region'],
-        ['key' => 'hesco', 'label' => 'HESCO', 'name' => 'Hyderabad Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.hesco'), 'tagline' => 'Hyderabad region'],
-        ['key' => 'sepco', 'label' => 'SEPCO', 'name' => 'Sukkur Electric Power Company', 'type' => 'electricity', 'route' => route('providers.sepco'), 'tagline' => 'Sukkur region'],
-        ['key' => 'qesco', 'label' => 'QESCO', 'name' => 'Quetta Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.qesco'), 'tagline' => 'Quetta region'],
-        ['key' => 'tesco', 'label' => 'TESCO', 'name' => 'Tribal Electric Supply Company', 'type' => 'electricity', 'route' => route('providers.tesco'), 'tagline' => 'Tribal Areas'],
-        ['key' => 'ke', 'label' => 'K-Electric', 'name' => 'Karachi Electric', 'type' => 'electricity', 'route' => route('providers.kelectric'), 'tagline' => 'Karachi city'],
-        ['key' => 'sngpl', 'label' => 'SNGPL', 'name' => 'Sui Northern Gas Pipelines Ltd.', 'type' => 'gas', 'route' => route('providers.sngpl'), 'tagline' => 'Punjab & KPK'],
-        ['key' => 'ssgc', 'label' => 'SSGC', 'name' => 'Sui Southern Gas Company', 'type' => 'gas', 'route' => route('providers.ssgc'), 'tagline' => 'Sindh & Balochistan'],
-        ['key' => 'ptcl', 'label' => 'PTCL', 'name' => 'Pakistan Telecommunication Company Limited', 'type' => 'internet', 'route' => route('providers.ptcl'), 'tagline' => 'Nationwide internet'],
-        ['key' => 'nayatel', 'label' => 'Nayatel', 'name' => 'Nayatel Fiber Internet', 'type' => 'internet', 'route' => route('providers.nayatel'), 'tagline' => 'Fiber cities'],
-        ['key' => 'stormfiber', 'label' => 'StormFiber', 'name' => 'StormFiber Broadband', 'type' => 'internet', 'route' => route('providers.stormfiber'), 'tagline' => 'Fiber broadband'],
-    ];
-
-    $providers = array_map(function ($provider) use ($providerLogos) {
-        $provider['logo'] = $providerLogos[$provider['key']] ?? asset('storage/img/' . $provider['key'] . '.png');
-        return $provider;
-    }, $providers);
+    $baseUrl = config('app.url');
+    $allProviders = config('providers.providers');
+    $providers = collect($allProviders)
+        ->map(function ($provider) {
+            $routeName = 'providers.' . ($provider['key'] === 'ke' ? 'kelectric' : $provider['key']);
+            return [
+                'key' => $provider['key'],
+                'label' => $provider['name'],
+                'name' => $provider['full_name'],
+                'type' => $provider['type'],
+                'route' => route($routeName),
+                'tagline' => implode(', ', array_slice($provider['coverage_area'], 0, 2)),
+                'logo' => asset($provider['image_path']),
+            ];
+        })
+        ->values()
+        ->toArray();
 @endphp
+
+@push('schema')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Home',
+            'item' => $baseUrl . '/',
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => [
+        [
+            '@type' => 'Question',
+            'name' => 'Is CheckBill.pk really free?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'Yes, completely free. Checking bills, saving reference numbers, and getting reminders costs nothing. No hidden charges, no premium tiers.',
+            ],
+        ],
+        [
+            '@type' => 'Question',
+            'name' => 'Is the bill data official and accurate?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'We fetch duplicate bill data directly from the same official provider systems used by LESCO, IESCO, K-Electric, SNGPL, and other companies. The bills are identical to what you\'d get from their official websites.',
+            ],
+        ],
+        [
+            '@type' => 'Question',
+            'name' => 'Is my data safe and private?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'We only use your email to send bill reminders. We never share your data with third parties, and you can delete your account and all saved bills anytime from your dashboard.',
+            ],
+        ],
+        [
+            '@type' => 'Question',
+            'name' => 'Do I need to create an account to check bills?',
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text' => 'No, you can check bills without an account. However, creating a free account lets you save reference numbers, get email reminders, and access your bill history from one dashboard.',
+            ],
+        ],
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
 
 @section('content')
 
@@ -128,9 +161,14 @@
                                                     class="px-4 py-3 mx-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors"
                                                     onclick="selectProvider(this)">
                                                     <div class="flex items-center gap-3">
-                                                        <div class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center p-2 shadow-sm">
-                                                            <img src="{{ $provider['logo'] }}" alt="{{ $provider['label'] }} logo" class="w-full h-full object-contain" loading="lazy">
-                                                        </div>
+                                                    <div class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center p-2 shadow-sm">
+                                                        <img src="{{ $provider['logo'] }}" 
+                                                             alt="{{ $provider['label'] }} {{ strtolower($provider['type']) }} bill online, {{ $provider['name'] }}" 
+                                                             width="40" 
+                                                             height="40"
+                                                             class="w-full h-full object-contain" 
+                                                             loading="lazy">
+                                                    </div>
                                                         <div>
                                                             <div class="text-sm font-semibold text-slate-900">{{ $provider['label'] }}</div>
                                                             <div class="text-[11px] text-slate-500">{{ $provider['name'] }}</div>
@@ -153,10 +191,10 @@
                         <div class="relative z-10">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Reference Number</label>
-                                <button type="button" class="text-[11px] font-medium text-green-600 hover:text-green-700 hover:underline flex items-center gap-1">
+                                <a href="/find-reference-number" class="text-[11px] font-medium text-green-600 hover:text-green-700 hover:underline flex items-center gap-1">
                                     <iconify-icon icon="lucide:help-circle" width="12"></iconify-icon>
                                     Where to find?
-                                </button>
+                                </a>
                             </div>
                             <div class="relative group">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -503,7 +541,12 @@
                     <a href="{{ $provider['route'] }}" class="group p-5 rounded-2xl bg-white border-2 border-slate-100 hover:border-green-300 hover:shadow-xl transition-all duration-200">
                         <div class="flex items-start gap-4">
                             <div class="w-14 h-14 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center p-3 shadow-sm group-hover:scale-110 transition-transform">
-                                <img src="{{ $provider['logo'] }}" alt="{{ $provider['label'] }} logo" class="w-full h-full object-contain" loading="lazy">
+                                <img src="{{ $provider['logo'] }}" 
+                                     alt="{{ $provider['label'] }} {{ strtolower($provider['type']) }} bill online, {{ $provider['name'] }}" 
+                                     width="56" 
+                                     height="56"
+                                     class="w-full h-full object-contain" 
+                                     loading="lazy">
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 mb-1">
@@ -611,7 +654,7 @@
             trigger.innerHTML = `
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center p-1.5 shadow-sm">
-                        <img src="${logo}" alt="${name} logo" class="w-full h-full object-contain" />
+                        <img src="${logo}" alt="${name} ${typeLabel.toLowerCase()} bill online" width="32" height="32" class="w-full h-full object-contain" />
                     </div>
                     <div class="flex flex-col leading-tight">
                         <span class="text-slate-900 font-semibold">${name}</span>

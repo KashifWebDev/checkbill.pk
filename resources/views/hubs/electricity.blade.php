@@ -1,42 +1,48 @@
 @extends('layouts.app')
 
-@section('title', 'Electricity Bill Online in Pakistan — Check & Save with CheckBill.pk')
+@section('title', 'Electricity Bill Online 2025 in Pakistan — Check & Save with CheckBill.pk')
 @section('meta_description', 'Check electricity bills online in Pakistan for IESCO, LESCO, MEPCO, FESCO, PESCO, GEPCO, HESCO, SEPCO, QESCO, TESCO and K-Electric. Learn how to save meters and get reminders with CheckBill.pk.')
-@section('canonical', url('/electricity-bill-online'))
+@section('canonical', config('app.url') . '/electricity-bill-online')
+
+@push('schema')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ config('app.url') }}/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Electricity Bill Online",
+      "item": "{{ config('app.url') }}/electricity-bill-online"
+    }
+  ]
+}
+</script>
+@endpush
 
 @php
-    $providerLogos = [
-        'iesco' => asset('storage/img/iesco.jpg'),
-        'lesco' => asset('storage/img/lesco.png'),
-        'mepco' => asset('storage/img/mepco.png'),
-        'fesco' => asset('storage/img/fesco.png'),
-        'pesco' => asset('storage/img/pesco.png'),
-        'gepco' => asset('storage/img/gepco.png'),
-        'hesco' => asset('storage/img/hesco.jpg'),
-        'sepco' => asset('storage/img/sepco.png'),
-        'qesco' => asset('storage/img/qesco.png'),
-        'tesco' => asset('storage/img/tesco.png'),
-        'ke' => asset('storage/img/kelectric.jpg'),
-    ];
-
-    $electricityProviders = [
-        ['key' => 'iesco', 'label' => 'IESCO', 'name' => 'Islamabad Electric Supply Company', 'route' => route('providers.iesco'), 'tagline' => 'Islamabad region'],
-        ['key' => 'lesco', 'label' => 'LESCO', 'name' => 'Lahore Electric Supply Company', 'route' => route('providers.lesco'), 'tagline' => 'Lahore region'],
-        ['key' => 'mepco', 'label' => 'MEPCO', 'name' => 'Multan Electric Power Company', 'route' => route('providers.mepco'), 'tagline' => 'Multan region'],
-        ['key' => 'fesco', 'label' => 'FESCO', 'name' => 'Faisalabad Electric Supply Company', 'route' => route('providers.fesco'), 'tagline' => 'Faisalabad region'],
-        ['key' => 'pesco', 'label' => 'PESCO', 'name' => 'Peshawar Electric Supply Company', 'route' => route('providers.pesco'), 'tagline' => 'Peshawar region'],
-        ['key' => 'gepco', 'label' => 'GEPCO', 'name' => 'Gujranwala Electric Power Company', 'route' => route('providers.gepco'), 'tagline' => 'Gujranwala region'],
-        ['key' => 'hesco', 'label' => 'HESCO', 'name' => 'Hyderabad Electric Supply Company', 'route' => route('providers.hesco'), 'tagline' => 'Hyderabad region'],
-        ['key' => 'sepco', 'label' => 'SEPCO', 'name' => 'Sukkur Electric Power Company', 'route' => route('providers.sepco'), 'tagline' => 'Sukkur region'],
-        ['key' => 'qesco', 'label' => 'QESCO', 'name' => 'Quetta Electric Supply Company', 'route' => route('providers.qesco'), 'tagline' => 'Quetta region'],
-        ['key' => 'tesco', 'label' => 'TESCO', 'name' => 'Tribal Electric Supply Company', 'route' => route('providers.tesco'), 'tagline' => 'Tribal Areas'],
-        ['key' => 'ke', 'label' => 'K-Electric', 'name' => 'Karachi Electric', 'route' => route('providers.kelectric'), 'tagline' => 'Karachi city'],
-    ];
-
-    $electricityProviders = array_map(function ($provider) use ($providerLogos) {
-        $provider['logo'] = $providerLogos[$provider['key']] ?? asset('storage/img/' . $provider['key'] . '.png');
-        return $provider;
-    }, $electricityProviders);
+    $allProviders = config('providers.providers');
+    $electricityProviders = collect($allProviders)
+        ->filter(fn($p) => $p['type'] === 'electricity')
+        ->map(function ($provider) {
+            return [
+                'key' => $provider['key'],
+                'label' => $provider['name'],
+                'name' => $provider['full_name'],
+                'route' => route('providers.' . ($provider['key'] === 'ke' ? 'kelectric' : $provider['key'])),
+                'tagline' => implode(', ', array_slice($provider['coverage_area'], 0, 2)),
+                'logo' => asset($provider['image_path']),
+            ];
+        })
+        ->values()
+        ->toArray();
 @endphp
 
 @section('content')
