@@ -146,7 +146,7 @@ return [
             'image_path' => 'storage/img/kelectric.jpg',
             'related_providers' => ['iesco', 'lesco', 'mepco', 'fesco'],
         ],
-        
+
         // Gas Providers
         'sngpl' => [
             'slug' => 'sngpl-bill-online',
@@ -174,7 +174,7 @@ return [
             'image_path' => 'storage/img/ssgc.png',
             'related_providers' => ['sngpl'],
         ],
-        
+
         // Internet Providers
         'ptcl' => [
             'slug' => 'ptcl-bill-online',
