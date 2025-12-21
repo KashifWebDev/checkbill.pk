@@ -42,7 +42,7 @@
                     <div class="flex items-center justify-between p-3 rounded-xl bg-slate-800/50">
                         <span class="text-slate-300">Late fees avoided</span>
                         <span class="font-bold text-green-300">₨ 1,200 saved</span>
-                    </div>
+                </div>
                 </div>
             </div>
 
@@ -80,7 +80,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <iconify-icon icon="lucide:mail" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
                             </div>
-                            <input id="email" name="email" type="email" required autocomplete="email" value="{{ old('email') }}"
+                        <input id="email" name="email" type="email" required autocomplete="email" value="{{ old('email') }}"
                                    class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all">
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <iconify-icon icon="lucide:lock" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
                             </div>
-                            <input id="password" name="password" type="password" required autocomplete="current-password"
+                        <input id="password" name="password" type="password" required autocomplete="current-password"
                                    class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all">
                         </div>
                     </div>

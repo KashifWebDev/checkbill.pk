@@ -99,7 +99,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <iconify-icon icon="lucide:user" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
                             </div>
-                            <input id="name" name="name" type="text" required autocomplete="name" value="{{ old('name') }}"
+                        <input id="name" name="name" type="text" required autocomplete="name" value="{{ old('name') }}"
                                    class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all"
                                    placeholder="Your full name">
                         </div>
@@ -111,7 +111,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <iconify-icon icon="lucide:mail" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
                             </div>
-                            <input id="email" name="email" type="email" required autocomplete="email" value="{{ old('email') }}"
+                        <input id="email" name="email" type="email" required autocomplete="email" value="{{ old('email') }}"
                                    class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all"
                                    placeholder="your.email@example.com">
                         </div>
@@ -127,7 +127,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <iconify-icon icon="lucide:lock" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
                             </div>
-                            <input id="password" name="password" type="password" required autocomplete="new-password"
+                        <input id="password" name="password" type="password" required autocomplete="new-password"
                                    class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all"
                                    placeholder="Create a strong password">
                         </div>
@@ -139,7 +139,7 @@
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                 <iconify-icon icon="lucide:lock" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
                             </div>
-                            <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"
+                        <input id="password_confirmation" name="password_confirmation" type="password" required autocomplete="new-password"
                                    class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 pl-12 pr-4 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all"
                                    placeholder="Confirm your password">
                         </div>

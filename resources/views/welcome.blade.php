@@ -101,72 +101,72 @@
                 <h1 class="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
                     Stop searching.<br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600">Start checking.</span>
-                </h1>
+            </h1>
 
                 <p class="text-lg sm:text-xl text-slate-600 mb-4 max-w-2xl mx-auto leading-relaxed">
                     Your electricity, gas, and internet bills in one place. Check duplicate bills instantly, get reminders, and never miss a due date.
-                </p>
+            </p>
                 <p class="text-sm text-slate-500 mb-8 max-w-xl mx-auto">
                     ہر مہینے بل ڈھونڈنے کی پریشانی ختم کریں – ایک ہی جگہ سے گھر، دفتر اور گیس کے سب بل چیک کریں
-                </p>
-            </div>
+            </p>
+        </div>
 
             <!-- Main Bill Checker Card -->
             <div id="app" class="max-w-2xl mx-auto mb-12 md:mb-16 animate-fade-in-up animate-delay-100">
                 <div class="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6 z-10">
-                    <!-- Tab Switcher -->
+                <!-- Tab Switcher -->
                     <div class="flex p-1.5 bg-slate-50 rounded-2xl mb-6 border border-slate-100">
                         <button type="button" data-bill-tab="electricity" id="tab-electricity" class="flex-1 py-3 text-sm tab-btn-active transition-all flex items-center justify-center gap-2">
                             <iconify-icon icon="lucide:zap" width="16" class="text-orange-500"></iconify-icon>
-                            Electricity
-                        </button>
+                        Electricity
+                    </button>
                         <button type="button" data-bill-tab="gas" id="tab-gas" class="flex-1 py-3 text-sm tab-btn-inactive transition-all flex items-center justify-center gap-2">
                             <iconify-icon icon="lucide:flame" width="16"></iconify-icon>
-                            Gas
-                        </button>
+                        Gas
+                    </button>
                         <button type="button" data-bill-tab="internet" id="tab-internet" class="flex-1 py-3 text-sm tab-btn-inactive transition-all flex items-center justify-center gap-2">
                             <iconify-icon icon="lucide:wifi" width="16"></iconify-icon>
-                            Internet
-                        </button>
-                    </div>
+                        Internet
+                    </button>
+                </div>
 
                     <form action="{{ route('bills.check') }}" method="GET" class="space-y-5">
                         <!-- Provider Dropdown -->
                         <div class="relative z-50">
                             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Select Provider</label>
                             <input type="hidden" name="provider" id="provider-input" required>
-                            <input type="hidden" name="type" id="bill-type-input" value="electricity">
+                        <input type="hidden" name="type" id="bill-type-input" value="electricity">
 
-                            <div class="custom-select relative">
+                        <div class="custom-select relative">
                                 <button type="button" onclick="this.parentElement.classList.toggle('active')" class="w-full text-left bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl px-4 py-4 flex items-center justify-between transition-all focus:ring-2 focus:ring-green-500/30 focus:border-green-500 group">
-                                    <span id="selected-text" class="flex items-center gap-3 text-sm font-medium text-slate-500">
+                                <span id="selected-text" class="flex items-center gap-3 text-sm font-medium text-slate-500">
                                         <span class="w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center">
                                             <iconify-icon icon="lucide:search" width="14" class="text-slate-400"></iconify-icon>
                                         </span>
                                         Search for your provider (e.g., LESCO, IESCO, SNGPL)
                                     </span>
                                     <iconify-icon icon="lucide:chevron-down" width="18" class="text-slate-400 group-focus:text-green-600 transition-colors"></iconify-icon>
-                                </button>
+                            </button>
 
                                 <div class="custom-select-options absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-100 rounded-2xl shadow-2xl py-3 z-50 max-h-[400px] overflow-y-auto">
-                                    @php
-                                        $groups = ['electricity' => 'Electricity Providers', 'gas' => 'Gas Providers', 'internet' => 'Internet Providers'];
-                                    @endphp
+                                @php
+                                    $groups = ['electricity' => 'Electricity Providers', 'gas' => 'Gas Providers', 'internet' => 'Internet Providers'];
+                                @endphp
 
-                                    @foreach ($groups as $type => $heading)
-                                        @php $outerLoop = $loop; @endphp
+                                @foreach ($groups as $type => $heading)
+                                    @php $outerLoop = $loop; @endphp
                                         <div class="px-4 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider sticky top-0 bg-white border-b border-slate-100">{{ $heading }}</div>
 
-                                        @foreach ($providers as $provider)
-                                            @if ($provider['type'] === $type)
-                                                <div
-                                                    data-provider-type="{{ $provider['type'] }}"
-                                                    data-provider-key="{{ $provider['key'] }}"
-                                                    data-provider-name="{{ $provider['label'] }}"
-                                                    data-provider-logo="{{ $provider['logo'] }}"
+                                    @foreach ($providers as $provider)
+                                        @if ($provider['type'] === $type)
+                                            <div
+                                                data-provider-type="{{ $provider['type'] }}"
+                                                data-provider-key="{{ $provider['key'] }}"
+                                                data-provider-name="{{ $provider['label'] }}"
+                                                data-provider-logo="{{ $provider['logo'] }}"
                                                     class="px-4 py-3 mx-2 rounded-xl hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors"
-                                                    onclick="selectProvider(this)">
-                                                    <div class="flex items-center gap-3">
+                                                onclick="selectProvider(this)">
+                                                <div class="flex items-center gap-3">
                                                     <div class="w-10 h-10 rounded-xl bg-white border border-slate-100 flex items-center justify-center p-2 shadow-sm">
                                                         <img src="{{ $provider['logo'] }}" 
                                                              alt="{{ $provider['label'] }} {{ strtolower($provider['type']) }} bill online, {{ $provider['name'] }}" 
@@ -175,8 +175,8 @@
                                                              class="w-full h-full object-contain" 
                                                              loading="lazy">
                                                     </div>
-                                                        <div>
-                                                            <div class="text-sm font-semibold text-slate-900">{{ $provider['label'] }}</div>
+                                                    <div>
+                                                        <div class="text-sm font-semibold text-slate-900">{{ $provider['label'] }}</div>
                                                             <div class="text-[11px] text-slate-500">{{ $provider['name'] }}</div>
                                                         </div>
                                                     </div>
@@ -189,60 +189,60 @@
                                             <div class="border-t border-slate-100 my-2"></div>
                                         @endif
                                     @endforeach
-                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Reference Number Input -->
+                    <!-- Reference Number Input -->
                         <div class="relative z-10">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Reference Number</label>
                                 <a href="/find-reference-number" class="text-[11px] font-medium text-green-600 hover:text-green-700 hover:underline flex items-center gap-1">
-                                    <iconify-icon icon="lucide:help-circle" width="12"></iconify-icon>
-                                    Where to find?
+                                <iconify-icon icon="lucide:help-circle" width="12"></iconify-icon>
+                                Where to find?
                                 </a>
-                            </div>
-                            <div class="relative group">
-                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <iconify-icon icon="lucide:hash" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
-                                </div>
-                                <input type="tel" name="reference_number" placeholder="Enter your 14-digit reference number" class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 sm:py-4 pl-12 pr-4 text-base sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all min-h-[48px]">
-                            </div>
                         </div>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <iconify-icon icon="lucide:hash" width="18" class="text-slate-400 group-focus-within:text-green-500 transition-colors"></iconify-icon>
+                            </div>
+                                <input type="tel" name="reference_number" placeholder="Enter your 14-digit reference number" class="block w-full bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl py-4 sm:py-4 pl-12 pr-4 text-base sm:text-sm font-semibold text-slate-900 placeholder:text-slate-400 placeholder:font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all min-h-[48px]">
+                        </div>
+                    </div>
 
                         <!-- Save Bill Toggle -->
                         <div class="flex flex-col gap-2">
-                            @guest
-                                <div class="flex items-center gap-2 opacity-60">
-                                    <input type="checkbox" id="save-bill" class="w-4 h-4 rounded border-slate-300 text-green-600 cursor-not-allowed" disabled>
+                        @guest
+                            <div class="flex items-center gap-2 opacity-60">
+                                <input type="checkbox" id="save-bill" class="w-4 h-4 rounded border-slate-300 text-green-600 cursor-not-allowed" disabled>
                                     <label for="save-bill" class="text-xs text-slate-600 select-none">Save this bill for quick access next month</label>
-                                </div>
+                            </div>
                                 <a href="{{ route('register') }}" class="inline-flex items-center gap-2 text-xs font-semibold text-green-700 hover:text-green-800 group">
                                     <iconify-icon icon="lucide:arrow-right" width="12" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
                                     Create free account to save bills & get email reminders
-                                </a>
-                            @endguest
+                            </a>
+                        @endguest
 
-                            @auth
-                                <div class="flex items-center gap-2">
-                                    <input type="checkbox" id="save-bill" name="save_bill" class="w-4 h-4 rounded border-slate-300 text-green-600 focus:ring-green-500 cursor-pointer accent-green-600">
-                                    <label for="save-bill" class="text-xs text-slate-600 select-none cursor-pointer">Save this bill to my dashboard</label>
-                                </div>
-                            @endauth
-                        </div>
+                        @auth
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="save-bill" name="save_bill" class="w-4 h-4 rounded border-slate-300 text-green-600 focus:ring-green-500 cursor-pointer accent-green-600">
+                                <label for="save-bill" class="text-xs text-slate-600 select-none cursor-pointer">Save this bill to my dashboard</label>
+                            </div>
+                        @endauth
+                    </div>
 
-                        <!-- Submit Button -->
+                    <!-- Submit Button -->
                         <button type="submit" class="w-full relative overflow-hidden rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 py-4 sm:py-4 text-sm font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-200 active:scale-[0.98] group min-h-[48px]">
-                            <span class="relative z-10 flex items-center justify-center gap-2">
+                        <span class="relative z-10 flex items-center justify-center gap-2">
                                 Check My Bill Now
                                 <iconify-icon icon="lucide:arrow-right" width="18" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
-                            </span>
-                        </button>
-                    </form>
+                        </span>
+                    </button>
+                </form>
 
                     <!-- Social Proof -->
                     <div class="mt-6 pt-6 border-t border-slate-100 flex items-center justify-center gap-4">
-                        <div class="flex -space-x-2">
+                    <div class="flex -space-x-2">
                             <div class="w-8 h-8 rounded-full border-2 border-white bg-gradient-to-br from-blue-400 to-blue-600"></div>
                             <div class="w-8 h-8 rounded-full border-2 border-white bg-gradient-to-br from-green-400 to-green-600"></div>
                             <div class="w-8 h-8 rounded-full border-2 border-white bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-[10px] text-white font-bold">+2k</div>
@@ -273,8 +273,8 @@
                     <div class="mt-4 flex items-center gap-2 text-xs text-slate-500">
                         <iconify-icon icon="lucide:clock" width="14"></iconify-icon>
                         <span>5 seconds</span>
-                    </div>
-                </div>
+                            </div>
+                        </div>
 
                 <!-- Step 2 -->
                 <div class="workflow-step active bg-white rounded-2xl p-6 border-2 border-slate-100 hover:border-green-200 hover:shadow-lg transition-all">
@@ -385,8 +385,8 @@
                             <button class="w-full mt-3 py-2 rounded-xl bg-amber-600 text-white text-xs font-semibold hover:bg-amber-700 transition">
                                 Check Now
                             </button>
-                        </div>
-                    </div>
+                </div>
+            </div>
 
                     <!-- Card 3 - Gas SNGPL -->
                     <div class="dashboard-card bg-gradient-to-br from-slate-50 to-white rounded-2xl p-5 border-2 border-slate-100">
@@ -523,7 +523,7 @@
                         <a href="{{ route('register') }}" class="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-emerald-400 transition shadow-lg">
                             Start Free Today
                             <iconify-icon icon="lucide:arrow-right" width="16"></iconify-icon>
-                        </a>
+                    </a>
                     @endguest
                 </div>
             </div>
@@ -681,7 +681,7 @@
         const defaultSelectedMarkup = selectedText ? selectedText.innerHTML : '';
 
         function setActiveTab(type) {
-            billTypeInput.value = type;
+                billTypeInput.value = type;
 
             tabButtons.forEach((btn) => {
                 if (btn.dataset.billTab === type) {

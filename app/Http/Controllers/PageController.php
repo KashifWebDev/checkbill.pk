@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\ContactSubmission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class PageController extends Controller
 {
@@ -47,6 +49,97 @@ class PageController extends Controller
             'slug' => $slug,
             'relatedBlogs' => $relatedBlogs,
         ]);
+    }
+
+    public function privacyPolicy()
+    {
+        return view('pages.privacy-policy');
+    }
+
+    public function termsOfService()
+    {
+        return view('pages.terms-of-service');
+    }
+
+    public function contactUs()
+    {
+        // Generate a simple math captcha
+        $num1 = rand(1, 10);
+        $num2 = rand(1, 10);
+        $operation = rand(0, 1) ? '+' : '-';
+        
+        if ($operation === '+') {
+            $answer = $num1 + $num2;
+        } else {
+            // Ensure positive result for subtraction
+            if ($num1 < $num2) {
+                $temp = $num1;
+                $num1 = $num2;
+                $num2 = $temp;
+            }
+            $answer = $num1 - $num2;
+        }
+        
+        // Store answer in session
+        session(['captcha_answer' => $answer]);
+        
+        return view('pages.contact-us', [
+            'captcha_question' => "{$num1} {$operation} {$num2}",
+        ]);
+    }
+
+    public function submitContact(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|max:5000',
+            'captcha' => 'required|integer',
+        ]);
+
+        // Validate captcha
+        $captchaAnswer = session('captcha_answer');
+        if (!$captchaAnswer || (int)$request->captcha !== $captchaAnswer) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid captcha answer. Please try again.',
+                'errors' => ['captcha' => ['The captcha answer is incorrect.']]
+            ], 422);
+        }
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please fill in all required fields correctly.',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        
+        // Clear captcha from session after successful validation
+        session()->forget('captcha_answer');
+
+        try {
+            ContactSubmission::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'subject' => $request->subject,
+                'message' => $request->message,
+            ]);
+
+            // TODO: Add email notification here if needed
+            // Mail::to('support@checkbill.pk')->send(new ContactSubmissionMail($submission));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Thank you for your message! We\'ll get back to you within 24-48 hours.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, there was an error sending your message. Please try again later.'
+            ], 500);
+        }
     }
 }
 

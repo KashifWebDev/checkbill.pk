@@ -65,6 +65,12 @@ Route::get('/blog', [BlogController::class, 'index'])->name('blogs.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blogs.show');
 Route::post('/blog/subscribe', [BlogController::class, 'subscribe'])->name('blogs.subscribe');
 
+// Support pages
+Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('pages.privacy');
+Route::get('/terms-of-service', [PageController::class, 'termsOfService'])->name('pages.terms');
+Route::get('/contact-us', [PageController::class, 'contactUs'])->name('pages.contact');
+Route::post('/contact-us', [PageController::class, 'submitContact'])->name('pages.contact.submit');
+
 // Robots.txt
 Route::get('/robots.txt', function () {
     $baseUrl = config('app.url');
@@ -119,6 +125,26 @@ Route::get('/sitemap.xml', function () {
         'loc' => $baseUrl . '/blog',
         'priority' => '0.9',
         'changefreq' => 'daily',
+        'lastmod' => now()->toAtomString()
+    ];
+    
+    // Support pages - important for trust and legal compliance
+    $urls[] = [
+        'loc' => $baseUrl . '/privacy-policy',
+        'priority' => '0.7',
+        'changefreq' => 'monthly',
+        'lastmod' => now()->toAtomString()
+    ];
+    $urls[] = [
+        'loc' => $baseUrl . '/terms-of-service',
+        'priority' => '0.7',
+        'changefreq' => 'monthly',
+        'lastmod' => now()->toAtomString()
+    ];
+    $urls[] = [
+        'loc' => $baseUrl . '/contact-us',
+        'priority' => '0.75',
+        'changefreq' => 'monthly',
         'lastmod' => now()->toAtomString()
     ];
     

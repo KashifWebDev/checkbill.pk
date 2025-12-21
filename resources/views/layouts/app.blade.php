@@ -168,7 +168,7 @@
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         })(window, document, "clarity", "script", "uoltb12nho");
     </script>
-    
+
 </head>
 
 <body class="@yield('body_class', 'gradient-bg text-slate-700 antialiased relative min-h-screen flex flex-col')">
@@ -276,8 +276,9 @@
                 <div>
                     <h3 class="text-sm font-bold text-slate-900 mb-3">Support</h3>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="text-slate-600 hover:text-slate-900 transition">Privacy Policy</a></li>
-                        <li><a href="#" class="text-slate-600 hover:text-slate-900 transition">Terms of Service</a></li>
+                        <li><a href="{{ route('pages.privacy') }}" class="text-slate-600 hover:text-slate-900 transition">Privacy Policy</a></li>
+                        <li><a href="{{ route('pages.terms') }}" class="text-slate-600 hover:text-slate-900 transition">Terms of Service</a></li>
+                        <li><a href="{{ route('pages.contact') }}" class="text-slate-600 hover:text-slate-900 transition">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
