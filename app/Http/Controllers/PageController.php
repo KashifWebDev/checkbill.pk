@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -33,6 +34,9 @@ class PageController extends Controller
 
         abort_unless($provider, 404);
 
+        // Get related blogs for this provider
+        $relatedBlogs = Blog::getByProvider($provider['key'], 5);
+
         // Use a dedicated provider view if it exists (e.g. providers.iesco),
         // otherwise fall back to the generic provider template so all routes work.
         $candidateView = 'providers.' . $provider['key'];
@@ -41,6 +45,7 @@ class PageController extends Controller
         return view($viewName, [
             'provider' => $provider,
             'slug' => $slug,
+            'relatedBlogs' => $relatedBlogs,
         ]);
     }
 }

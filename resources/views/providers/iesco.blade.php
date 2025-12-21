@@ -161,7 +161,7 @@
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Reference Number</label>
-                            <a href="/find-reference-number" class="text-[11px] font-medium {{ $textColor }} hover:underline flex items-center gap-1">
+                            <a href="/blog/find-reference-number" class="text-[11px] font-medium {{ $textColor }} hover:underline flex items-center gap-1">
                                 <iconify-icon icon="lucide:help-circle" width="12"></iconify-icon>
                                 Where to find?
                             </a>
@@ -269,7 +269,7 @@
                     If you need a duplicate IESCO bill for payment or record keeping, use the bill lookup form and then download the duplicate bill PDF. A duplicate bill is useful when the original copy is missing or when you need to share the bill with a tenant, employer, or accountant.
                 </p>
                 <p class="text-sm text-slate-600">
-                    Learn more in our guide: <a href="/how-to-download-duplicate-bill" class="font-semibold text-orange-600 hover:text-orange-700 underline">How to download duplicate bill</a>
+                    Learn more in our guide: <a href="/blog/how-to-download-duplicate-bill" class="font-semibold text-orange-600 hover:text-orange-700 underline">How to download duplicate bill</a>
                 </p>
             </section>
 
@@ -277,7 +277,7 @@
             <section>
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Where to find IESCO reference number</h2>
                 <p class="text-base text-slate-700 leading-relaxed mb-4">
-                    Your reference number is printed on the top area of your previous IESCO bill. It is usually labelled Reference No. If you are not sure, open the guide on <a href="/find-reference-number" class="font-semibold text-orange-600 hover:text-orange-700 underline">how to find reference number on utility bills</a> and follow the highlighted examples.
+                    Your reference number is printed on the top area of your previous IESCO bill. It is usually labelled Reference No. If you are not sure, open the guide on <a href="/blog/find-reference-number" class="font-semibold text-orange-600 hover:text-orange-700 underline">how to find reference number on utility bills</a> and follow the highlighted examples.
                 </p>
             </section>
 
@@ -304,7 +304,7 @@
                     Your bill shows a due date and an amount payable within due date. If you pay after the due date, late payment surcharge may apply. Checking your due date early helps you avoid extra charges and prevents service issues.
                 </p>
                 <p class="text-sm text-slate-600">
-                    Learn more: <a href="/how-to-pay-electricity-bill-online-pakistan" class="font-semibold text-orange-600 hover:text-orange-700 underline">How to pay electricity bill online in Pakistan</a>
+                    Learn more: <a href="/blog/how-to-pay-electricity-bill-online-pakistan" class="font-semibold text-orange-600 hover:text-orange-700 underline">How to pay electricity bill online in Pakistan</a>
                 </p>
             </section>
 
@@ -389,15 +389,51 @@
         </div>
         @endif
 
+        <!-- Related Blog Posts -->
+        @if(isset($relatedBlogs) && $relatedBlogs->count() > 0)
+        <div class="max-w-6xl mx-auto mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Related Articles</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Expert tips and guides to help you manage your {{ strtolower($provider['utility_type_label']) }} bills better</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($relatedBlogs as $blog)
+                <a href="{{ route('blogs.show', $blog->slug) }}" class="group bg-white rounded-2xl border border-slate-100 p-2 hover:shadow-lg hover:shadow-slate-200/40 hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
+                    <div class="aspect-[4/3] rounded-xl bg-gradient-to-br {{ $blog->gradient_from ?? 'from-orange-50' }} {{ $blog->gradient_to ?? 'to-orange-100' }} border border-orange-100 relative overflow-hidden flex items-center justify-center mb-4">
+                        <div class="absolute inset-0 bg-[radial-gradient(#fdba74_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
+                        <iconify-icon icon="{{ $blog->icon_name ?? 'lucide:file-text' }}" width="32" class="text-orange-500 group-hover:scale-110 transition-transform duration-300"></iconify-icon>
+                    </div>
+                    <div class="px-2 pb-2 flex-grow flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold uppercase">{{ $blog->category }}</span>
+                            <span class="text-[10px] text-slate-400">• {{ $blog->reading_time }} min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold tracking-tight text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">
+                            {{ $blog->title }}
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-4 line-clamp-2">
+                            {{ $blog->excerpt }}
+                        </p>
+                        <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                            <span class="text-[10px] font-medium text-slate-400">{{ $blog->published_at->format('M d, Y') }}</span>
+                            <iconify-icon icon="lucide:arrow-up-right" width="16" class="text-slate-300 group-hover:text-orange-500 transition-colors"></iconify-icon>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         <!-- Internal Links Section -->
         <div class="max-w-4xl mx-auto mb-16">
             <div class="bg-slate-50 rounded-2xl p-6 border-2 border-slate-200">
                 <h3 class="text-lg font-bold text-slate-900 mb-4">Helpful guides</h3>
                 <div class="grid sm:grid-cols-2 gap-3 text-sm">
-                    <a href="/find-reference-number" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">How to find reference number</a>
-                    <a href="/how-to-download-duplicate-bill" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">How to download duplicate bill</a>
-                    <a href="/how-to-pay-electricity-bill-online-pakistan" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">How to pay electricity bill online</a>
-                    <a href="/electricity-bill-calculator-pakistan" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">Electricity bill calculator</a>
+                    <a href="/blog/find-reference-number" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">How to find reference number</a>
+                    <a href="/blog/how-to-download-duplicate-bill" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">How to download duplicate bill</a>
+                    <a href="/blog/how-to-pay-electricity-bill-online-pakistan" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">How to pay electricity bill online</a>
+                    <a href="/blog/electricity-bill-calculator-pakistan" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">Electricity bill calculator</a>
                     <a href="{{ $provider['hub_url'] }}" class="text-orange-600 hover:text-orange-700 font-medium hover:underline">All {{ strtolower($provider['utility_type_label']) }} providers</a>
                 </div>
             </div>

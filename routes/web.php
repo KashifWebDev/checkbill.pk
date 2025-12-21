@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\BillController;
+use App\Http\Controllers\BlogController;
+use App\Models\Blog;
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,6 +60,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/dashboard/bills/{savedBill}', [BillController::class, 'destroy'])->name('bills.destroy');
 });
 
+// Blog routes
+Route::get('/blog', [BlogController::class, 'index'])->name('blogs.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blogs.show');
+Route::post('/blog/subscribe', [BlogController::class, 'subscribe'])->name('blogs.subscribe');
+
 // Robots.txt
 Route::get('/robots.txt', function () {
     $baseUrl = config('app.url');
@@ -77,37 +84,70 @@ Route::get('/sitemap.xml', function () {
     $baseUrl = config('app.url');
     $allProviders = config('providers.providers');
     
-    $urls = [
-        ['loc' => $baseUrl . '/', 'priority' => '1.0'],
-        ['loc' => $baseUrl . '/electricity-bill-online', 'priority' => '0.9'],
-        ['loc' => $baseUrl . '/gas-bill-online', 'priority' => '0.9'],
-        ['loc' => $baseUrl . '/internet-bill-online', 'priority' => '0.9'],
+    $urls = [];
+    
+    // Homepage - highest priority
+    $urls[] = [
+        'loc' => $baseUrl . '/',
+        'priority' => '1.0',
+        'changefreq' => 'weekly',
+        'lastmod' => now()->toAtomString()
     ];
     
-    // Add all provider pages
+    // Hub pages - high priority for category pages
+    $urls[] = [
+        'loc' => $baseUrl . '/electricity-bill-online',
+        'priority' => '0.95',
+        'changefreq' => 'weekly',
+        'lastmod' => now()->toAtomString()
+    ];
+    $urls[] = [
+        'loc' => $baseUrl . '/gas-bill-online',
+        'priority' => '0.95',
+        'changefreq' => 'weekly',
+        'lastmod' => now()->toAtomString()
+    ];
+    $urls[] = [
+        'loc' => $baseUrl . '/internet-bill-online',
+        'priority' => '0.95',
+        'changefreq' => 'weekly',
+        'lastmod' => now()->toAtomString()
+    ];
+    
+    // Blog index page - high priority for content hub
+    $urls[] = [
+        'loc' => $baseUrl . '/blog',
+        'priority' => '0.9',
+        'changefreq' => 'daily',
+        'lastmod' => now()->toAtomString()
+    ];
+    
+    // Add all provider pages - high priority for main service pages
     foreach ($allProviders as $provider) {
         $urls[] = [
             'loc' => $baseUrl . '/' . $provider['slug'],
-            'priority' => '0.8',
-            'changefreq' => 'monthly'
+            'priority' => '0.85',
+            'changefreq' => 'weekly',
+            'lastmod' => now()->toAtomString()
         ];
     }
     
-    // Add guide pages (if they exist)
-    $guidePages = [
-        '/find-reference-number',
-        '/how-to-download-duplicate-bill',
-        '/how-to-pay-electricity-bill-online-pakistan',
-        '/how-to-pay-gas-bill-online-pakistan',
-        '/electricity-bill-calculator-pakistan',
-        '/gas-bill-calculator-pakistan',
-    ];
+    // Add all blog posts from database - dynamic content with lastmod
+    $blogs = Blog::whereNotNull('published_at')
+        ->where('published_at', '<=', now())
+        ->orderBy('published_at', 'desc')
+        ->get();
     
-    foreach ($guidePages as $guide) {
+    foreach ($blogs as $blog) {
+        // Higher priority for guide posts (they're more evergreen)
+        $isGuide = in_array($blog->category, ['Guides', 'Tools']);
+        $priority = $isGuide ? '0.8' : '0.75';
+        
         $urls[] = [
-            'loc' => $baseUrl . $guide,
-            'priority' => '0.7',
-            'changefreq' => 'monthly'
+            'loc' => $baseUrl . '/blog/' . $blog->slug,
+            'priority' => $priority,
+            'changefreq' => $isGuide ? 'monthly' : 'weekly',
+            'lastmod' => $blog->updated_at ? $blog->updated_at->toAtomString() : $blog->published_at->toAtomString()
         ];
     }
 

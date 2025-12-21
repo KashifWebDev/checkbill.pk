@@ -3,17 +3,17 @@
 @php
     $providerKey = $provider['key'];
     $allProviders = config('providers.providers');
-    
+
     $baseUrl = config('app.url');
     $canonicalUrl = $baseUrl . '/' . $provider['slug'];
-    
+
     $title = $provider['name'] . ' Bill Online 2025, Check and Download Duplicate ' . $provider['utility_type_label'] . ' Bill by Reference Number';
     $metaDescription = 'Check your ' . $provider['name'] . ' ' . strtolower($provider['utility_type_label']) . ' bill online by reference number. Download duplicate bill PDF, view due date, avoid late payment surcharge, and save your bill for one click checking next month.';
-    
+
     $isElectricity = $provider['type'] === 'electricity';
     $isGas = $provider['type'] === 'gas';
     $isInternet = $provider['type'] === 'internet';
-    
+
     $badgeClasses = $isElectricity ? 'border-orange-200 bg-orange-50/80 text-orange-700' : ($isGas ? 'border-red-200 bg-red-50/80 text-red-700' : 'border-blue-200 bg-blue-50/80 text-blue-700');
     $iconColor = $isElectricity ? 'text-orange-500' : ($isGas ? 'text-red-500' : 'text-blue-500');
     $textColor = $isElectricity ? 'text-orange-600 hover:text-orange-700' : ($isGas ? 'text-red-600 hover:text-red-700' : 'text-blue-600 hover:text-blue-700');
@@ -24,7 +24,7 @@
     $ctaBorder = $isElectricity ? 'border-orange-400/30' : ($isGas ? 'border-red-400/30' : 'border-blue-400/30');
     $ctaButton = $isElectricity ? 'bg-orange-500 hover:bg-orange-400' : ($isGas ? 'bg-red-500 hover:bg-red-400' : 'bg-blue-500 hover:bg-blue-400');
     $checkboxColor = $isElectricity ? 'text-orange-600 focus:ring-orange-500 accent-orange-600' : ($isGas ? 'text-red-600 focus:ring-red-500 accent-red-600' : 'text-blue-600 focus:ring-blue-500 accent-blue-600');
-    
+
     // Get related providers for cross-linking
     $relatedProviders = [];
     if (isset($provider['related_providers'])) {
@@ -34,10 +34,10 @@
             }
         }
     }
-    
+
     // Utility type specific guides
-    $payGuideUrl = $isElectricity ? '/how-to-pay-electricity-bill-online-pakistan' : ($isGas ? '/how-to-pay-gas-bill-online-pakistan' : '#');
-    $calculatorUrl = $isElectricity ? '/electricity-bill-calculator-pakistan' : ($isGas ? '/gas-bill-calculator-pakistan' : '#');
+    $payGuideUrl = $isElectricity ? '/blog/how-to-pay-electricity-bill-online-pakistan' : ($isGas ? '/blog/how-to-pay-gas-bill-online-pakistan' : '#');
+    $calculatorUrl = $isElectricity ? '/blog/electricity-bill-calculator-pakistan' : ($isGas ? '/blog/gas-bill-calculator-pakistan' : '#');
 @endphp
 
 @section('title', $title)
@@ -93,7 +93,7 @@
             ],
         ],
     ];
-    
+
     $breadcrumbSchema = [
         '@context' => 'https://schema.org',
         '@type' => 'BreadcrumbList',
@@ -133,11 +133,11 @@
         <div class="text-center mb-12 animate-fade-in-up">
             <div class="flex items-center justify-center gap-3 mb-6">
                 <div class="w-20 h-20 rounded-2xl bg-white border-2 border-slate-200 flex items-center justify-center p-4 shadow-lg">
-                    <img src="{{ asset($provider['image_path']) }}" 
-                         alt="{{ $provider['name'] }} {{ strtolower($provider['utility_type_label']) }} bill online, {{ $provider['full_name'] }}" 
-                         width="80" 
+                    <img src="{{ asset($provider['image_path']) }}"
+                         alt="{{ $provider['name'] }} {{ strtolower($provider['utility_type_label']) }} bill online, {{ $provider['full_name'] }}"
+                         width="80"
                          height="80"
-                         class="w-full h-full object-contain" 
+                         class="w-full h-full object-contain"
                          loading="eager">
                 </div>
             </div>
@@ -168,7 +168,7 @@
                     <div>
                         <div class="flex justify-between items-center mb-2">
                             <label class="text-xs font-bold text-slate-700 uppercase tracking-wide">Reference / Consumer Number</label>
-                            <a href="/find-reference-number" class="text-[11px] font-medium {{ $textColor }} hover:underline flex items-center gap-1">
+                            <a href="/blog/find-reference-number" class="text-[11px] font-medium {{ $textColor }} hover:underline flex items-center gap-1">
                                 <iconify-icon icon="lucide:help-circle" width="12"></iconify-icon>
                                 Where to find?
                             </a>
@@ -212,7 +212,7 @@
                     </button>
                 </form>
             </div>
-            
+
             <!-- Save This Bill Card -->
             @guest
             <div class="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-6 border-2 border-emerald-200 mt-6">
@@ -248,7 +248,7 @@
                     <input type="hidden" name="provider" value="{{ $provider['key'] }}">
                     <input type="hidden" name="save" value="1">
                     <div>
-                        <input type="text" name="nickname" placeholder="e.g. Home, Office, Parents house" 
+                        <input type="text" name="nickname" placeholder="e.g. Home, Office, Parents house"
                                class="w-full rounded-xl border-2 border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500 transition-all">
                     </div>
                     <button type="submit" class="w-full rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 px-5 py-3 text-sm font-semibold text-white shadow-lg hover:shadow-xl transition-all">
@@ -276,7 +276,7 @@
                     If you need a duplicate {{ $provider['name'] }} bill for payment or record keeping, use the bill lookup form and then download the duplicate bill PDF. A duplicate bill is useful when the original copy is missing or when you need to share the bill with a tenant, employer, or accountant.
                 </p>
                 <p class="text-sm text-slate-600">
-                    Learn more in our guide: <a href="/how-to-download-duplicate-bill" class="font-semibold {{ $textColor }} underline">How to download duplicate bill</a>
+                    Learn more in our guide: <a href="/blog/how-to-download-duplicate-bill" class="font-semibold {{ $textColor }} underline">How to download duplicate bill</a>
                 </p>
             </section>
 
@@ -284,7 +284,7 @@
             <section>
                 <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Where to find {{ $provider['name'] }} reference number</h2>
                 <p class="text-base text-slate-700 leading-relaxed mb-4">
-                    Your reference number is printed on the top area of your previous {{ $provider['name'] }} bill. It is usually labelled Reference No. If you are not sure, open the guide on <a href="/find-reference-number" class="font-semibold {{ $textColor }} underline">how to find reference number on utility bills</a> and follow the highlighted examples.
+                    Your reference number is printed on the top area of your previous {{ $provider['name'] }} bill. It is usually labelled Reference No. If you are not sure, open the guide on <a href="/blog/find-reference-number" class="font-semibold {{ $textColor }} underline">how to find reference number on utility bills</a> and follow the highlighted examples.
                 </p>
             </section>
 
@@ -389,11 +389,11 @@
                 <a href="/{{ $related['slug'] }}" class="group bg-white rounded-2xl p-5 border-2 border-slate-100 {{ $hoverBorderClass }} hover:shadow-xl transition-all duration-200">
                     <div class="flex flex-col items-center text-center">
                         <div class="w-16 h-16 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center p-3 shadow-sm mb-3 group-hover:scale-110 transition-transform">
-                            <img src="{{ asset($related['image_path']) }}" 
-                                 alt="{{ $related['name'] }} {{ strtolower($related['utility_type_label']) }} bill online" 
-                                 width="64" 
+                            <img src="{{ asset($related['image_path']) }}"
+                                 alt="{{ $related['name'] }} {{ strtolower($related['utility_type_label']) }} bill online"
+                                 width="64"
                                  height="64"
-                                 class="w-full h-full object-contain" 
+                                 class="w-full h-full object-contain"
                                  loading="lazy">
                         </div>
                         <h3 class="text-base font-bold text-slate-900 mb-1">{{ $related['name'] }}</h3>
@@ -406,13 +406,49 @@
         </div>
         @endif
 
+        <!-- Related Blog Posts -->
+        @if(isset($relatedBlogs) && $relatedBlogs->count() > 0)
+        <div class="max-w-6xl mx-auto mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Related Articles</h2>
+                <p class="text-slate-600 max-w-2xl mx-auto">Expert tips and guides to help you manage your {{ strtolower($provider['utility_type_label']) }} bills better</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @foreach($relatedBlogs as $blog)
+                <a href="{{ route('blogs.show', $blog->slug) }}" class="group bg-white rounded-2xl border border-slate-100 p-2 hover:shadow-lg hover:shadow-slate-200/40 hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
+                    <div class="aspect-[4/3] rounded-xl bg-gradient-to-br {{ $blog->gradient_from ?? 'from-orange-50' }} {{ $blog->gradient_to ?? 'to-orange-100' }} border border-orange-100 relative overflow-hidden flex items-center justify-center mb-4">
+                        <div class="absolute inset-0 bg-[radial-gradient(#fdba74_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
+                        <iconify-icon icon="{{ $blog->icon_name ?? 'lucide:file-text' }}" width="32" class="text-orange-500 group-hover:scale-110 transition-transform duration-300"></iconify-icon>
+                    </div>
+                    <div class="px-2 pb-2 flex-grow flex flex-col">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold uppercase">{{ $blog->category }}</span>
+                            <span class="text-[10px] text-slate-400">• {{ $blog->reading_time }} min read</span>
+                        </div>
+                        <h3 class="text-lg font-bold tracking-tight text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">
+                            {{ $blog->title }}
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-4 line-clamp-2">
+                            {{ $blog->excerpt }}
+                        </p>
+                        <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                            <span class="text-[10px] font-medium text-slate-400">{{ $blog->published_at->format('M d, Y') }}</span>
+                            <iconify-icon icon="lucide:arrow-up-right" width="16" class="text-slate-300 group-hover:text-orange-500 transition-colors"></iconify-icon>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         <!-- Internal Links Section -->
         <div class="max-w-4xl mx-auto mb-16">
             <div class="bg-slate-50 rounded-2xl p-6 border-2 border-slate-200">
                 <h3 class="text-lg font-bold text-slate-900 mb-4">Helpful guides</h3>
                 <div class="grid sm:grid-cols-2 gap-3 text-sm">
-                    <a href="/find-reference-number" class="{{ $textColor }} font-medium hover:underline">How to find reference number</a>
-                    <a href="/how-to-download-duplicate-bill" class="{{ $textColor }} font-medium hover:underline">How to download duplicate bill</a>
+                    <a href="/blog/find-reference-number" class="{{ $textColor }} font-medium hover:underline">How to find reference number</a>
+                    <a href="/blog/how-to-download-duplicate-bill" class="{{ $textColor }} font-medium hover:underline">How to download duplicate bill</a>
                     @if($payGuideUrl !== '#')
                     <a href="{{ $payGuideUrl }}" class="{{ $textColor }} font-medium hover:underline">How to pay {{ strtolower($provider['utility_type_label']) }} bill online</a>
                     @endif
@@ -451,15 +487,15 @@
             const targetId = button.dataset.accordion;
             const content = document.getElementById(targetId);
             const icon = button.querySelector('.accordion-icon');
-            
+
             const isHidden = content.classList.contains('hidden');
-            
+
             // Close all accordions
             document.querySelectorAll('.accordion-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.accordion-icon').forEach(ic => {
                 ic.style.transform = 'rotate(0deg)';
             });
-            
+
             if (isHidden) {
                 content.classList.remove('hidden');
                 if (icon) icon.style.transform = 'rotate(180deg)';
