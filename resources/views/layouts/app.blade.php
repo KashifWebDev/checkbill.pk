@@ -78,10 +78,17 @@
         }
 
         /* Custom Dropdown */
+        .custom-select {
+            position: relative;
+            z-index: 10000;
+        }
         .custom-select-options {
             display: none;
-            max-height: 320px;
+            max-height: 400px;
             overflow-y: auto;
+            position: absolute;
+            z-index: 10000 !important;
+            isolation: isolate;
         }
         .custom-select.active .custom-select-options {
             display: block;

@@ -112,8 +112,8 @@
         </div>
 
             <!-- Main Bill Checker Card -->
-            <div id="app" class="max-w-2xl mx-auto mb-12 md:mb-16 animate-fade-in-up animate-delay-100">
-                <div class="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6 z-10">
+            <div id="app" class="max-w-2xl mx-auto mb-12 md:mb-16 animate-fade-in-up animate-delay-100" style="position: relative; z-index: 9999;">
+                <div class="relative bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6">
                 <!-- Tab Switcher -->
                     <div class="flex p-1.5 bg-slate-50 rounded-2xl mb-6 border border-slate-100">
                         <button type="button" data-bill-tab="electricity" id="tab-electricity" class="flex-1 py-3 text-sm tab-btn-active transition-all flex items-center justify-center gap-2">
@@ -132,12 +132,12 @@
 
                     <form action="{{ route('bills.check') }}" method="GET" class="space-y-5">
                         <!-- Provider Dropdown -->
-                        <div class="relative z-50">
+                        <div class="relative" style="z-index: 10000;">
                             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Select Provider</label>
                             <input type="hidden" name="provider" id="provider-input" required>
                         <input type="hidden" name="type" id="bill-type-input" value="electricity">
 
-                        <div class="custom-select relative">
+                        <div class="custom-select">
                                 <button type="button" onclick="this.parentElement.classList.toggle('active')" class="w-full text-left bg-slate-50 hover:bg-slate-100 border-2 border-slate-200 rounded-xl px-4 py-4 flex items-center justify-between transition-all focus:ring-2 focus:ring-green-500/30 focus:border-green-500 group">
                                 <span id="selected-text" class="flex items-center gap-3 text-sm font-medium text-slate-500">
                                         <span class="w-8 h-8 rounded-lg bg-slate-200 flex items-center justify-center">
@@ -148,7 +148,7 @@
                                     <iconify-icon icon="lucide:chevron-down" width="18" class="text-slate-400 group-focus:text-green-600 transition-colors"></iconify-icon>
                             </button>
 
-                                <div class="custom-select-options absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-100 rounded-2xl shadow-2xl py-3 z-50 max-h-[400px] overflow-y-auto">
+                                <div class="custom-select-options absolute top-full left-0 right-0 mt-2 bg-white border-2 border-slate-100 rounded-2xl shadow-2xl py-3 max-h-[400px] overflow-y-auto w-full">
                                 @php
                                     $groups = ['electricity' => 'Electricity Providers', 'gas' => 'Gas Providers', 'internet' => 'Internet Providers'];
                                 @endphp

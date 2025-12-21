@@ -64,17 +64,17 @@
     $isElectricity = $type === 'electricity';
     $isGas = $type === 'gas';
     $isInternet = $type === 'internet';
-    
+
     $badgeColor = $isElectricity ? 'orange' : ($isGas ? 'red' : 'blue');
     $badgeClasses = $isElectricity ? 'bg-orange-50 border-orange-200 text-orange-700' : ($isGas ? 'bg-red-50 border-red-200 text-red-700' : 'bg-blue-50 border-blue-200 text-blue-700');
     $buttonColor = $isElectricity ? 'bg-orange-500 hover:bg-orange-400' : ($isGas ? 'bg-red-500 hover:bg-red-400' : 'bg-blue-500 hover:bg-blue-400');
-    
+
     // Set cookies for external bill system
     $expiry = time() + (60 * 60 * 24 * 365); // 1 year
     setcookie('disco', $providerKey, $expiry, '/');
     setcookie('industrial', '0', $expiry, '/');
     setcookie('reference', 'R-' . $rawReference, $expiry, '/');
-    
+
     // External bill URL
     $externalBillUrl = 'https://bill.pitc.com.pk/gbill.aspx?refno=' . urlencode($rawReference);
 @endphp
@@ -99,11 +99,11 @@
         <div class="bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-slate-100 p-4 sm:p-6 md:p-8 mb-6 md:mb-8 animate-fade-in-up animate-delay-100">
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6 pb-6 border-b border-slate-100">
                 <div class="w-16 h-16 rounded-2xl bg-slate-50 border-2 border-slate-200 flex items-center justify-center p-3 shadow-sm flex-shrink-0">
-                    <img src="{{ $provider['logo'] }}" 
-                         alt="{{ $provider['label'] }} {{ strtolower($type) }} bill online, {{ $provider['name'] }}" 
-                         width="64" 
+                    <img src="{{ $provider['logo'] }}"
+                         alt="{{ $provider['label'] }} {{ strtolower($type) }} bill online, {{ $provider['name'] }}"
+                         width="64"
                          height="64"
-                         class="w-full h-full object-contain" 
+                         class="w-full h-full object-contain"
                          loading="eager">
                 </div>
                 <div>
@@ -162,15 +162,15 @@
         @endif
 
         <!-- Bill Data Placeholder -->
-        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 mb-8 text-white border-2 border-emerald-400/30 shadow-2xl">
-            <div class="flex items-center gap-3 mb-4">
-                <iconify-icon icon="lucide:info" width="20" class="text-emerald-300"></iconify-icon>
-                <p class="text-sm font-semibold text-emerald-300">Bill Data Placeholder</p>
-            </div>
-            <p class="text-sm text-slate-200 leading-relaxed">
-                Live bill amount, due date and "after due date" charges will appear here once integrations with {{ $provider['name'] }} are enabled. For now, use this page to confirm that your reference number is saved correctly and to set up your future dashboard.
-            </p>
-        </div>
+{{--        <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 mb-8 text-white border-2 border-emerald-400/30 shadow-2xl">--}}
+{{--            <div class="flex items-center gap-3 mb-4">--}}
+{{--                <iconify-icon icon="lucide:info" width="20" class="text-emerald-300"></iconify-icon>--}}
+{{--                <p class="text-sm font-semibold text-emerald-300">Bill Data Placeholder</p>--}}
+{{--            </div>--}}
+{{--            <p class="text-sm text-slate-200 leading-relaxed">--}}
+{{--                Live bill amount, due date and "after due date" charges will appear here once integrations with {{ $provider['name'] }} are enabled. For now, use this page to confirm that your reference number is saved correctly and to set up your future dashboard.--}}
+{{--            </p>--}}
+{{--        </div>--}}
 
         @auth
             <!-- Save Bill Form -->
