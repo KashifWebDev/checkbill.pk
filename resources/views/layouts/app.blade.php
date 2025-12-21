@@ -186,6 +186,7 @@
                 <a href="{{ route('hubs.electricity') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Electricity</a>
                 <a href="{{ route('hubs.gas') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Gas</a>
                 <a href="{{ route('hubs.internet') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Internet</a>
+                <a href="{{ route('blogs.index') }}" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Blog</a>
             </nav>
 
             <!-- Desktop Auth Buttons -->
@@ -220,6 +221,7 @@
                 <a href="{{ route('hubs.electricity') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Electricity</a>
                 <a href="{{ route('hubs.gas') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Gas</a>
                 <a href="{{ route('hubs.internet') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Internet</a>
+                <a href="{{ route('blogs.index') }}" class="flex items-center px-4 py-3 rounded-lg text-base font-medium text-slate-700 hover:bg-slate-50 transition-colors">Blog</a>
 
                 <div class="border-t border-slate-200 my-2"></div>
 

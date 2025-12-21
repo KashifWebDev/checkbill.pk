@@ -75,43 +75,45 @@
     @if($featuredPost)
     <div class="max-w-6xl mx-auto mb-12 animate-fade-up delay-200">
         <article class="relative bg-white rounded-3xl border border-slate-200 p-2 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 group overflow-hidden">
-            <div class="grid md:grid-cols-2 gap-6 items-center">
-                <!-- Abstract Featured Image -->
-                <div class="h-64 md:h-80 w-full rounded-2xl bg-gradient-to-br {{ $featuredPost->gradient_from ?? 'from-green-50' }} {{ $featuredPost->gradient_to ?? 'to-emerald-100' }} border border-green-100 relative overflow-hidden flex items-center justify-center">
-                    <div class="absolute inset-0 pattern-grid opacity-30"></div>
-                    <div class="w-24 h-24 rounded-2xl bg-white shadow-xl flex items-center justify-center text-emerald-500 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
-                        <iconify-icon icon="{{ $featuredPost->icon_name ?? 'lucide:trending-down' }}" width="48" stroke-width="1.5"></iconify-icon>
-                    </div>
-                </div>
-                
-                <div class="p-4 md:p-8 md:pr-12">
-                    <div class="flex items-center gap-3 mb-4">
-                        <span class="px-2.5 py-1 rounded-lg bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider">Featured</span>
-                        <span class="text-xs font-medium text-slate-400">{{ $featuredPost->published_at->format('M d, Y') }}</span>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 mb-4 group-hover:text-green-600 transition-colors">
-                        {{ $featuredPost->title }}
-                    </h2>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-3">
-                        {{ $featuredPost->excerpt }}
-                    </p>
-                    <div class="flex items-center justify-between">
-                        @if($featuredPost->author_name)
-                        <div class="flex items-center gap-2">
-                            <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
-                                {{ strtoupper(substr($featuredPost->author_name, 0, 2)) }}
-                            </div>
-                            <span class="text-xs font-medium text-slate-900">{{ $featuredPost->author_name }}</span>
+            <a href="{{ route('blogs.show', $featuredPost->slug) }}" class="block">
+                <div class="grid md:grid-cols-2 gap-6 items-center">
+                    <!-- Abstract Featured Image -->
+                    <div class="h-64 md:h-80 w-full rounded-2xl bg-gradient-to-br {{ $featuredPost->gradient_from ?? 'from-green-50' }} {{ $featuredPost->gradient_to ?? 'to-emerald-100' }} border border-green-100 relative overflow-hidden flex items-center justify-center">
+                        <div class="absolute inset-0 pattern-grid opacity-30"></div>
+                        <div class="w-24 h-24 rounded-2xl bg-white shadow-xl flex items-center justify-center text-emerald-500 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
+                            <iconify-icon icon="{{ $featuredPost->icon_name ?? 'lucide:trending-down' }}" width="48" stroke-width="1.5"></iconify-icon>
                         </div>
-                        @else
-                        <div></div>
-                        @endif
-                        <a href="{{ route('blogs.show', $featuredPost->slug) }}" class="inline-flex items-center gap-2 text-sm font-bold text-slate-900 hover:gap-3 transition-all">
-                            Read Article <iconify-icon icon="lucide:arrow-right" width="16"></iconify-icon>
-                        </a>
+                    </div>
+                    
+                    <div class="p-4 md:p-8 md:pr-12">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wider">Featured</span>
+                            <span class="text-xs font-medium text-slate-400">{{ $featuredPost->published_at->format('M d, Y') }}</span>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 mb-4 group-hover:text-green-600 transition-colors">
+                            {{ $featuredPost->title }}
+                        </h2>
+                        <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-3">
+                            {{ $featuredPost->excerpt }}
+                        </p>
+                        <div class="flex items-center justify-between">
+                            @if($featuredPost->author_name)
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">
+                                    {{ strtoupper(substr($featuredPost->author_name, 0, 2)) }}
+                                </div>
+                                <span class="text-xs font-medium text-slate-900">{{ $featuredPost->author_name }}</span>
+                            </div>
+                            @else
+                            <div></div>
+                            @endif
+                            <div class="inline-flex items-center gap-2 text-sm font-bold text-slate-900 group-hover:gap-3 transition-all">
+                                Read Article <iconify-icon icon="lucide:arrow-right" width="16"></iconify-icon>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </article>
     </div>
     @endif
@@ -120,28 +122,28 @@
     <div class="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-up delay-300">
         @foreach($blogs->skip(1) as $blog)
         <article class="bg-white rounded-2xl border border-slate-100 p-2 hover:shadow-lg hover:shadow-slate-200/40 hover:-translate-y-1 transition-all duration-300 group h-full flex flex-col">
-            <div class="aspect-[4/3] rounded-xl bg-gradient-to-br {{ $blog->gradient_from ?? 'from-orange-50' }} {{ $blog->gradient_to ?? 'to-orange-100' }} border border-orange-100 relative overflow-hidden flex items-center justify-center mb-4">
-                <div class="absolute inset-0 bg-[radial-gradient(#fdba74_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
-                <iconify-icon icon="{{ $blog->icon_name ?? 'lucide:file-text' }}" width="32" class="text-orange-500 group-hover:scale-110 transition-transform duration-300"></iconify-icon>
-            </div>
-            <div class="px-2 pb-2 flex-grow flex flex-col">
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold uppercase">{{ $blog->category }}</span>
-                    <span class="text-[10px] text-slate-400">• {{ $blog->reading_time }} min read</span>
+            <a href="{{ route('blogs.show', $blog->slug) }}" class="block h-full flex flex-col">
+                <div class="aspect-[4/3] rounded-xl bg-gradient-to-br {{ $blog->gradient_from ?? 'from-orange-50' }} {{ $blog->gradient_to ?? 'to-orange-100' }} border border-orange-100 relative overflow-hidden flex items-center justify-center mb-4">
+                    <div class="absolute inset-0 bg-[radial-gradient(#fdba74_1px,transparent_1px)] [background-size:16px_16px] opacity-20"></div>
+                    <iconify-icon icon="{{ $blog->icon_name ?? 'lucide:file-text' }}" width="32" class="text-orange-500 group-hover:scale-110 transition-transform duration-300"></iconify-icon>
                 </div>
-                <h3 class="text-lg font-bold tracking-tight text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">
-                    {{ $blog->title }}
-                </h3>
-                <p class="text-xs text-slate-500 leading-relaxed mb-4 line-clamp-2">
-                    {{ $blog->excerpt }}
-                </p>
-                <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
-                    <span class="text-[10px] font-medium text-slate-400">{{ $blog->published_at->format('M d, Y') }}</span>
-                    <a href="{{ route('blogs.show', $blog->slug) }}">
+                <div class="px-2 pb-2 flex-grow flex flex-col">
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-bold uppercase">{{ $blog->category }}</span>
+                        <span class="text-[10px] text-slate-400">• {{ $blog->reading_time }} min read</span>
+                    </div>
+                    <h3 class="text-lg font-bold tracking-tight text-slate-900 mb-2 group-hover:text-orange-600 transition-colors">
+                        {{ $blog->title }}
+                    </h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-4 line-clamp-2">
+                        {{ $blog->excerpt }}
+                    </p>
+                    <div class="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-slate-400">{{ $blog->published_at->format('M d, Y') }}</span>
                         <iconify-icon icon="lucide:arrow-up-right" width="16" class="text-slate-300 group-hover:text-orange-500 transition-colors"></iconify-icon>
-                    </a>
+                    </div>
                 </div>
-            </div>
+            </a>
         </article>
         @endforeach
 
